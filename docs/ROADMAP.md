@@ -16,18 +16,21 @@
 - Saved planning snapshot V1.
 - Auth/domain automated tests.
 
-## M3 — Delivery Workspace ✅ code complete
+## M3 — Delivery Workspace ✅
 - Requirements with priority and acceptance criteria.
 - Tasks optionally linked to requirements.
 - Five-stage Kanban workflow.
 - Activity history for project, requirement and task changes.
 - Owner-scoped delivery APIs and repository boundaries.
 
-## M4 — AI Layer
-- Provider abstraction.
-- Structured output for plans and requirement reviews.
-- Prompt/version audit metadata.
-- Human approval before writes that alter project scope.
+## M4 — AI Layer ✅ code complete
+- OpenAI Responses API adapter using Structured Outputs.
+- Deterministic offline fallback behind the same contract.
+- Local validation of every generated proposal.
+- Prompt/version/provider/model audit metadata.
+- Pending proposal review UI.
+- Explicit approve/reject flow.
+- Atomic application of approved plan + snapshot + requirements + tasks.
 
 ## M5 — GitHub Integration
 - Repository linking.

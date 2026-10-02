@@ -1,8 +1,10 @@
 import { integer, jsonb, pgEnum, pgTable, text, timestamp, uniqueIndex, uuid } from "drizzle-orm/pg-core";
+import type { AiWorkspaceProposal } from "@/src/domain/ai-proposal";
 
 export const projectStatus = pgEnum("project_status", ["draft", "active", "paused", "done"]);
 export const requirementPriority = pgEnum("requirement_priority", ["must", "should", "could"]);
 export const taskStatus = pgEnum("task_status", ["backlog", "ready", "in_progress", "review", "done"]);
+export const aiProposalStatus = pgEnum("ai_proposal_status", ["pending", "approved", "rejected"]);
 
 export const users = pgTable("users", {
   id: uuid("id").defaultRandom().primaryKey(),
@@ -67,5 +69,22 @@ export const activityEvents = pgTable("activity_events", {
   actorUserId: uuid("actor_user_id").notNull().references(() => users.id, { onDelete: "cascade" }),
   type: text("type").notNull(),
   payload: jsonb("payload").$type<Record<string, unknown>>().notNull(),
+  createdAt: timestamp("created_at", { withTimezone: true }).defaultNow().notNull(),
+});
+
+
+export const aiProposals = pgTable("ai_proposals", {
+  id: uuid("id").defaultRandom().primaryKey(),
+  projectId: uuid("project_id").notNull().references(() => projects.id, { onDelete: "cascade" }),
+  createdByUserId: uuid("created_by_user_id").notNull().references(() => users.id, { onDelete: "cascade" }),
+  kind: text("kind").notNull().default("workspace_bootstrap"),
+  status: aiProposalStatus("status").default("pending").notNull(),
+  promptVersion: text("prompt_version").notNull(),
+  provider: text("provider").notNull(),
+  model: text("model").notNull(),
+  providerResponseId: text("provider_response_id"),
+  proposal: jsonb("proposal").$type<AiWorkspaceProposal>().notNull(),
+  decidedByUserId: uuid("decided_by_user_id").references(() => users.id, { onDelete: "set null" }),
+  decidedAt: timestamp("decided_at", { withTimezone: true }),
   createdAt: timestamp("created_at", { withTimezone: true }).defaultNow().notNull(),
 });

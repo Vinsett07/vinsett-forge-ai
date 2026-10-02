@@ -1,6 +1,6 @@
 import { and, asc, desc, eq } from "drizzle-orm";
 import { getDb } from "@/src/db/client";
-import { activityEvents, requirements, tasks } from "@/src/db/schema";
+import { activityEvents, planSnapshots, requirements, tasks } from "@/src/db/schema";
 import type { RequirementInput, TaskInput, TaskStatus } from "@/src/domain/delivery";
 import { getProject } from "./projects";
 
@@ -9,13 +9,14 @@ export async function getDeliveryWorkspace(ownerId: string, projectId: string) {
   if (!project) return null;
 
   const db = getDb();
-  const [requirementRows, taskRows, activityRows] = await Promise.all([
+  const [requirementRows, taskRows, activityRows, snapshotRows] = await Promise.all([
     db.select().from(requirements).where(eq(requirements.projectId, projectId)).orderBy(asc(requirements.createdAt)),
     db.select().from(tasks).where(eq(tasks.projectId, projectId)).orderBy(asc(tasks.status), asc(tasks.position), asc(tasks.createdAt)),
     db.select().from(activityEvents).where(eq(activityEvents.projectId, projectId)).orderBy(desc(activityEvents.createdAt)).limit(30),
+    db.select({ version: planSnapshots.version }).from(planSnapshots).where(eq(planSnapshots.projectId, projectId)).orderBy(desc(planSnapshots.version)).limit(1),
   ]);
 
-  return { project, requirements: requirementRows, tasks: taskRows, activity: activityRows };
+  return { project, requirements: requirementRows, tasks: taskRows, activity: activityRows, planVersion: snapshotRows[0]?.version ?? 1 };
 }
 
 export async function createRequirement(ownerId: string, projectId: string, actorUserId: string, input: RequirementInput) {

@@ -1,10 +1,10 @@
 # VINSETT Forge AI
 
-**VINSETT Forge AI** is an AI-assisted software delivery workspace designed to turn an initial product idea into a traceable project: structured briefing, planning artifacts, ownership, lifecycle state and, in later milestones, backlog execution, QA evidence and GitHub context.
+**VINSETT Forge AI** is an AI-assisted software delivery workspace that turns a product idea into a traceable project: briefing, planning snapshots, requirements, backlog, Kanban execution, audit history and human-reviewed AI proposals.
 
-**Current version:** `0.3.0` — Milestone 3 delivery workspace.
+**Current version:** `0.4.0` — Milestone 4 AI layer.
 
-## What works through Milestone 3
+## What works through Milestone 4
 
 - Public product landing page.
 - Email/password registration, login and logout.
@@ -14,14 +14,17 @@
 - Per-user project ownership boundary.
 - Project creation from a validated product brief.
 - Deterministic first planning snapshot with epics, stories, risks and Definition of Done.
-- Project workspace list and detail screen.
 - Project lifecycle status: `draft`, `active`, `paused`, `done`.
-- Project deletion scoped to the authenticated owner.
 - Requirements with priority and acceptance criteria.
-- Tasks linked to requirements when useful.
+- Tasks optionally linked to requirements.
 - Five-stage Kanban workflow: Backlog → Ready → In Progress → Review → Done.
-- Activity history for project, requirement and task changes.
-- Automated tests for briefing, auth validation, password hashing and signed sessions.
+- Activity history for project, requirement, task and AI decisions.
+- OpenAI Responses API adapter using Structured Outputs when configured.
+- Deterministic AI fallback when no external API key is available.
+- AI proposal audit metadata: provider, model, prompt version and provider response ID.
+- Human approval/rejection before AI-generated scope is applied.
+- Atomic approval transaction for new plan snapshot + requirements + tasks.
+- Offline-safe automated domain/auth/AI proposal tests.
 - GitHub Actions workflow prepared for typecheck, tests and production build.
 
 ## Product flow
@@ -33,17 +36,24 @@ Authenticated workspace
       ↓
 Structured product brief
       ↓
-Validated domain contract
-      ↓
-Deterministic planning engine
-      ↓
-PostgreSQL transaction
-      ├── project
-      └── plan snapshot v1
-      ↓
-Project detail / lifecycle
+Deterministic baseline plan + snapshot v1
       ↓
 Requirements + Tasks + Kanban + Activity
+      ↓
+Generate AI proposal
+      ↓
+Pending review (NO scope mutation)
+      ↓
+Human decision
+   ┌─────────────┴─────────────┐
+Reject                      Approve
+   ↓                            ↓
+Audit only          Atomic DB transaction
+                    ├── current plan
+                    ├── next plan snapshot
+                    ├── requirements
+                    ├── tasks
+                    └── audit event
 ```
 
 ## Architecture
@@ -54,11 +64,13 @@ Requirements + Tasks + Kanban + Activity
 | Domain | Dependency-free TypeScript contracts |
 | Authentication | `scrypt` password hash + HMAC signed HttpOnly cookie |
 | Persistence | PostgreSQL + Drizzle ORM |
-| Planning | Deterministic adapter behind a stable domain contract |
+| Baseline planning | Deterministic domain adapter |
+| AI planning | OpenAI Responses API + Structured Outputs, with deterministic fallback |
+| AI safety boundary | Pending proposal + explicit human approval |
+| Auditability | Prompt version, provider, model, response ID, decision actor/time |
 | CI | GitHub Actions |
-| AI provider | Deferred to Milestone 4 |
 
-The deterministic planner is intentional. AI will be added as an adapter to the planning contract rather than becoming the application's domain model.
+The AI provider never owns the domain contract and never writes project scope directly.
 
 ## Local configuration
 
@@ -67,21 +79,22 @@ Create `.env.local` from `.env.example`:
 ```env
 DATABASE_URL=postgres://user:password@localhost:5432/vinsett_forge
 SESSION_SECRET=replace-with-at-least-32-random-characters
-AI_PROVIDER=disabled
+AI_PROVIDER=openai
+OPENAI_MODEL=gpt-6-astra
 OPENAI_API_KEY=
 ```
 
-Never commit `.env.local` or real credentials.
+Without `OPENAI_API_KEY`, proposal generation automatically uses the deterministic fallback. Never commit `.env.local` or real credentials.
 
-### Database schema
+## Database migrations
 
-Apply the current baseline migration to an empty PostgreSQL database:
+Apply migrations in order:
 
 ```bash
 psql "$DATABASE_URL" -f db/migrations/0001_milestone_2.sql
+psql "$DATABASE_URL" -f db/migrations/0002_delivery_workspace.sql
+psql "$DATABASE_URL" -f db/migrations/0003_ai_layer.sql
 ```
-
-The migration creates `users`, `projects` and `plan_snapshots` plus the `project_status` enum and ownership indexes.
 
 ## Run
 
@@ -108,40 +121,45 @@ The current offline-safe suite verifies:
 - deterministic plan completeness;
 - registration/login validation;
 - password salting and verification;
-- session signature tamper detection;
-- session expiration.
+- session signature tamper detection and expiration;
+- requirements, acceptance criteria and Kanban status validation;
+- AI proposal local schema validation;
+- invalid requirement references in proposed tasks;
+- duplicate proposal requirement keys;
+- deterministic AI fallback validity.
 
-See [`docs/VALIDATION.md`](docs/VALIDATION.md) for what was and was not executed in the current build environment.
+See [`docs/VALIDATION.md`](docs/VALIDATION.md) for executed and blocked release gates.
 
 ## Repository structure
 
 ```text
 app/
 ├── api/
-│   ├── auth/           # register, login, logout, current session
-│   └── projects/       # owner-scoped CRUD
-├── auth/               # login / registration UI
-├── dashboard/          # authenticated project workspace
-└── projects/           # creation and project detail
+│   ├── auth/
+│   └── projects/       # CRUD, delivery and AI proposal decisions
+├── auth/
+├── dashboard/
+└── projects/
 src/
-├── auth/               # password/session primitives
-├── db/                 # Drizzle client + schema
-├── domain/             # stable domain contracts
-└── repositories/       # persistence boundary
-db/migrations/          # SQL migration baseline
-tests/                  # offline-safe automated tests
-docs/                   # architecture, roadmap, validation
+├── ai/                 # provider adapter + versioned prompt
+├── auth/
+├── db/
+├── domain/             # stable contracts, including AI proposal validation
+└── repositories/
+db/migrations/
+tests/
+docs/
 ```
 
 ## Roadmap
 
 - **M1 — Foundation:** complete.
-- **M2 — Persistence + Authentication:** complete in code; production DB/browser validation pending.
-- **M3 — Delivery Workspace:** complete in code; live database/browser validation pending.
-- **M4 — AI Layer:** provider abstraction, structured AI planning/review, approval boundaries.
+- **M2 — Persistence + Authentication:** complete in code; live DB/browser validation pending.
+- **M3 — Delivery Workspace:** complete in code; live DB/browser validation pending.
+- **M4 — AI Layer:** complete in code; real provider/database/browser validation pending.
 - **M5 — GitHub Integration:** repository, issue, commit and PR context.
 - **M6 — Production Readiness:** E2E, abuse controls, observability, backup/restore and public demo.
 
 ## Security posture
 
-This repository intentionally does not contain API keys, database credentials or a production session secret. Authentication protects project ownership at the repository query boundary, not only in the UI. See [`docs/ARCHITECTURE.md`](docs/ARCHITECTURE.md) for current security assumptions and limitations.
+This repository contains no real API keys, database credentials or production session secrets. Project authorization is enforced at the repository boundary. AI-generated output is locally validated and remains pending until a human explicitly approves it. See [`docs/ARCHITECTURE.md`](docs/ARCHITECTURE.md) and [`docs/AI_LAYER.md`](docs/AI_LAYER.md).

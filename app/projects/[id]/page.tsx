@@ -2,9 +2,11 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { requireSession } from "@/src/auth/session";
 import { getDeliveryWorkspace } from "@/src/repositories/delivery";
+import { listAiProposals } from "@/src/repositories/ai-proposals";
 import type { ProjectPlan } from "@/src/domain/project-plan";
 import { ProjectActions } from "./ProjectActions";
 import { DeliveryWorkspace } from "./components/DeliveryWorkspace";
+import { AIProposalPanel } from "./components/AIProposalPanel";
 
 type Props = { params: Promise<{ id: string }> };
 
@@ -15,6 +17,7 @@ export default async function ProjectPage({ params }: Props) {
   if (!workspace) notFound();
   const { project } = workspace;
   const plan = project.plan as ProjectPlan | null;
+  const aiProposals = await listAiProposals(session.userId, id) ?? [];
 
   return (
     <main className="shell workspace project-detail">
@@ -44,7 +47,7 @@ export default async function ProjectPage({ params }: Props) {
         <section className="plan-panel detail-plan">
           {plan ? (
             <div className="plan-content">
-              <div className="eyebrow">PLANO SALVO • SNAPSHOT V1</div>
+              <div className="eyebrow">PLANO SALVO • SNAPSHOT V{workspace.planVersion}</div>
               <h2>{plan.summary}</h2>
               <h3>Premissas</h3><ul>{plan.assumptions.map((item) => <li key={item}>{item}</li>)}</ul>
               <h3>Épicos</h3>
@@ -55,6 +58,19 @@ export default async function ProjectPage({ params }: Props) {
           ) : <p>Nenhum plano salvo.</p>}
         </section>
       </section>
+
+      <AIProposalPanel
+        projectId={project.id}
+        proposals={aiProposals.map((item) => ({
+          id: item.id,
+          status: item.status,
+          provider: item.provider,
+          model: item.model,
+          promptVersion: item.promptVersion,
+          proposal: item.proposal,
+          createdAt: item.createdAt.toISOString(),
+        }))}
+      />
 
       <DeliveryWorkspace
         projectId={project.id}

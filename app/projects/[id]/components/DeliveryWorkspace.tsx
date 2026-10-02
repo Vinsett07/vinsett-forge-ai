@@ -1,6 +1,6 @@
 "use client";
 
-import { FormEvent, useMemo, useState } from "react";
+import { FormEvent, useEffect, useMemo, useState } from "react";
 import { useRouter } from "next/navigation";
 import type { RequirementPriority, TaskStatus } from "@/src/domain/delivery";
 
@@ -41,6 +41,9 @@ const activityLabels: Record<string, string> = {
   "requirement.created": "Requisito criado",
   "task.created": "Tarefa criada",
   "task.status_changed": "Tarefa movida",
+  "ai.proposal_created": "Proposta de IA criada",
+  "ai.proposal_approved": "Proposta de IA aprovada",
+  "ai.proposal_rejected": "Proposta de IA rejeitada",
 };
 
 export function DeliveryWorkspace({
@@ -59,6 +62,9 @@ export function DeliveryWorkspace({
   const [tasks, setTasks] = useState(initialTasks);
   const [error, setError] = useState("");
   const [busy, setBusy] = useState(false);
+
+  useEffect(() => setRequirements(initialRequirements), [initialRequirements]);
+  useEffect(() => setTasks(initialTasks), [initialTasks]);
 
   const requirementsById = useMemo(() => new Map(requirements.map((item) => [item.id, item])), [requirements]);
 
