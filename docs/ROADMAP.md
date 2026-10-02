@@ -8,11 +8,13 @@
 - Database schema seed.
 - CI.
 
-## M2 — Persistence + Authentication
-- PostgreSQL connection and migrations.
-- User authentication.
+## M2 — Persistence + Authentication ✅ code complete
+- PostgreSQL connection and migration.
+- User registration/login/logout.
+- Password hashing and signed HttpOnly sessions.
 - Project CRUD with ownership boundaries.
-- Saved planning snapshots.
+- Saved planning snapshot V1.
+- Auth/domain automated tests.
 
 ## M3 — Delivery Workspace
 - Requirements and acceptance criteria.

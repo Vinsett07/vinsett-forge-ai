@@ -1,10 +1,8 @@
 "use client";
 
 import { FormEvent, useState } from "react";
-import type { ProjectPlan } from "@/src/domain/project-plan";
 
 export default function NewProjectPage() {
-  const [plan, setPlan] = useState<ProjectPlan | null>(null);
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
 
@@ -16,59 +14,57 @@ export default function NewProjectPage() {
     const payload = Object.fromEntries(form.entries());
 
     try {
-      const response = await fetch("/api/projects/plan", {
+      const response = await fetch("/api/projects", {
         method: "POST",
         headers: { "content-type": "application/json" },
         body: JSON.stringify(payload),
       });
       const body = await response.json();
+      if (response.status === 401) {
+        window.location.href = "/auth";
+        return;
+      }
       if (!response.ok) throw new Error("Revise os campos do briefing.");
-      setPlan(body.plan);
+      window.location.href = `/projects/${body.project.id}`;
     } catch (cause) {
-      setError(cause instanceof Error ? cause.message : "Não foi possível gerar o plano.");
-    } finally {
+      setError(cause instanceof Error ? cause.message : "Não foi possível salvar o projeto.");
       setLoading(false);
     }
   }
 
   return (
-    <main className="shell workspace">
+    <main className="shell workspace new-project-shell">
       <header className="workspace-header">
         <div>
           <div className="eyebrow">NOVO PROJETO</div>
           <h1>Defina o problema antes da solução.</h1>
-          <p>Este briefing será a fonte de verdade do primeiro plano do produto.</p>
+          <p>Ao salvar, o Forge cria o projeto e registra o primeiro snapshot do plano.</p>
         </div>
-        <a href="/" className="secondary">Voltar</a>
+        <a href="/dashboard" className="secondary">Workspace</a>
       </header>
 
-      <div className="workspace-grid">
+      <div className="workspace-grid new-project-grid">
         <form className="brief-form" onSubmit={submit}>
           <label>Nome do projeto<input name="name" minLength={3} maxLength={80} required placeholder="Ex.: Clínica Agenda" /></label>
           <label>Problema a resolver<textarea name="problem" minLength={20} required placeholder="Descreva o problema real, quem sofre com ele e por quê." /></label>
           <label>Público inicial<textarea name="audience" minLength={3} required placeholder="Quem usará a primeira versão?" /></label>
           <label>Resultado esperado<textarea name="outcome" minLength={10} required placeholder="O que deve ser verdade quando o produto funcionar?" /></label>
-          <button className="primary button" disabled={loading}>{loading ? "Estruturando..." : "Gerar plano inicial"}</button>
+          <button className="primary button" disabled={loading}>{loading ? "Criando projeto..." : "Criar projeto e plano"}</button>
           {error && <p className="error" role="alert">{error}</p>}
         </form>
 
-        <section className="plan-panel" aria-live="polite">
-          {!plan ? (
-            <div className="empty-state">
-              <span>FORGE</span>
-              <h2>Seu plano aparecerá aqui.</h2>
-              <p>O primeiro milestone usa um planejador determinístico e testável. A camada de IA será conectada sem alterar o contrato do domínio.</p>
-            </div>
-          ) : (
-            <div className="plan-content">
-              <div className="eyebrow">PLANO INICIAL</div>
-              <h2>{plan.summary}</h2>
-              <h3>Épicos</h3>
-              {plan.epics.map((epic) => <article className="epic" key={epic.title}><strong>{epic.title}</strong><p>{epic.objective}</p><ul>{epic.stories.map((story) => <li key={story}>{story}</li>)}</ul></article>)}
-              <h3>Riscos</h3><ul>{plan.risks.map((risk) => <li key={risk}>{risk}</li>)}</ul>
-              <h3>Definition of Done</h3><ul>{plan.definitionOfDone.map((item) => <li key={item}>{item}</li>)}</ul>
-            </div>
-          )}
+        <section className="plan-panel creation-explainer">
+          <div className="empty-state">
+            <span>MILESTONE 2</span>
+            <h2>Agora o plano deixa de ser temporário.</h2>
+            <p>O briefing será persistido no PostgreSQL, associado ao usuário autenticado e acompanhado de um snapshot versionado do plano inicial.</p>
+            <ul className="feature-list">
+              <li>Propriedade por usuário</li>
+              <li>Persistência PostgreSQL</li>
+              <li>Snapshot V1 do planejamento</li>
+              <li>Status de projeto editável</li>
+            </ul>
+          </div>
         </section>
       </div>
     </main>

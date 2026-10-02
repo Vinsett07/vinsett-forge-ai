@@ -16,7 +16,7 @@ export default function HomePage() {
           O Forge AI organiza requisitos, backlog, riscos e critérios de aceite antes que o código vire dívida técnica.
         </p>
         <div className="actions">
-          <Link className="primary" href="/projects/new">Criar primeiro projeto</Link>
+          <Link className="primary" href="/auth">Entrar no Forge</Link>
           <a className="secondary" href="#arquitetura">Ver arquitetura do produto</a>
         </div>
         <div className="signal-grid" aria-label="Indicadores do milestone">
@@ -28,8 +28,8 @@ export default function HomePage() {
 
       <section className="shell section" id="arquitetura">
         <div className="section-heading">
-          <span>Milestone 1</span>
-          <h2>Fundação antes de automação.</h2>
+          <span>Milestone 2</span>
+          <h2>Persistência e identidade antes de escala.</h2>
         </div>
         <div className="card-grid">
           {capabilities.map(([title, text]) => (
