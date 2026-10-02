@@ -1,6 +1,8 @@
 import { integer, jsonb, pgEnum, pgTable, text, timestamp, uniqueIndex, uuid } from "drizzle-orm/pg-core";
 
 export const projectStatus = pgEnum("project_status", ["draft", "active", "paused", "done"]);
+export const requirementPriority = pgEnum("requirement_priority", ["must", "should", "could"]);
+export const taskStatus = pgEnum("task_status", ["backlog", "ready", "in_progress", "review", "done"]);
 
 export const users = pgTable("users", {
   id: uuid("id").defaultRandom().primaryKey(),
@@ -35,3 +37,35 @@ export const planSnapshots = pgTable("plan_snapshots", {
 }, (table) => ({
   projectVersionUnique: uniqueIndex("plan_snapshots_project_version_unique").on(table.projectId, table.version),
 }));
+
+export const requirements = pgTable("requirements", {
+  id: uuid("id").defaultRandom().primaryKey(),
+  projectId: uuid("project_id").notNull().references(() => projects.id, { onDelete: "cascade" }),
+  title: text("title").notNull(),
+  description: text("description").notNull(),
+  acceptanceCriteria: jsonb("acceptance_criteria").$type<string[]>().notNull(),
+  priority: requirementPriority("priority").default("must").notNull(),
+  createdAt: timestamp("created_at", { withTimezone: true }).defaultNow().notNull(),
+  updatedAt: timestamp("updated_at", { withTimezone: true }).defaultNow().notNull(),
+});
+
+export const tasks = pgTable("tasks", {
+  id: uuid("id").defaultRandom().primaryKey(),
+  projectId: uuid("project_id").notNull().references(() => projects.id, { onDelete: "cascade" }),
+  requirementId: uuid("requirement_id").references(() => requirements.id, { onDelete: "set null" }),
+  title: text("title").notNull(),
+  description: text("description").notNull().default(""),
+  status: taskStatus("status").default("backlog").notNull(),
+  position: integer("position").default(0).notNull(),
+  createdAt: timestamp("created_at", { withTimezone: true }).defaultNow().notNull(),
+  updatedAt: timestamp("updated_at", { withTimezone: true }).defaultNow().notNull(),
+});
+
+export const activityEvents = pgTable("activity_events", {
+  id: uuid("id").defaultRandom().primaryKey(),
+  projectId: uuid("project_id").notNull().references(() => projects.id, { onDelete: "cascade" }),
+  actorUserId: uuid("actor_user_id").notNull().references(() => users.id, { onDelete: "cascade" }),
+  type: text("type").notNull(),
+  payload: jsonb("payload").$type<Record<string, unknown>>().notNull(),
+  createdAt: timestamp("created_at", { withTimezone: true }).defaultNow().notNull(),
+});

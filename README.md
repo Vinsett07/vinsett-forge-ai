@@ -2,9 +2,9 @@
 
 **VINSETT Forge AI** is an AI-assisted software delivery workspace designed to turn an initial product idea into a traceable project: structured briefing, planning artifacts, ownership, lifecycle state and, in later milestones, backlog execution, QA evidence and GitHub context.
 
-**Current version:** `0.2.0` — Milestone 2 foundation.
+**Current version:** `0.3.0` — Milestone 3 delivery workspace.
 
-## What works in Milestone 2
+## What works through Milestone 3
 
 - Public product landing page.
 - Email/password registration, login and logout.
@@ -17,6 +17,10 @@
 - Project workspace list and detail screen.
 - Project lifecycle status: `draft`, `active`, `paused`, `done`.
 - Project deletion scoped to the authenticated owner.
+- Requirements with priority and acceptance criteria.
+- Tasks linked to requirements when useful.
+- Five-stage Kanban workflow: Backlog → Ready → In Progress → Review → Done.
+- Activity history for project, requirement and task changes.
 - Automated tests for briefing, auth validation, password hashing and signed sessions.
 - GitHub Actions workflow prepared for typecheck, tests and production build.
 
@@ -38,6 +42,8 @@ PostgreSQL transaction
       └── plan snapshot v1
       ↓
 Project detail / lifecycle
+      ↓
+Requirements + Tasks + Kanban + Activity
 ```
 
 ## Architecture
@@ -130,8 +136,8 @@ docs/                   # architecture, roadmap, validation
 ## Roadmap
 
 - **M1 — Foundation:** complete.
-- **M2 — Persistence + Authentication:** code complete; production DB/browser validation pending.
-- **M3 — Delivery Workspace:** requirements, acceptance criteria, tasks, Kanban, activity history.
+- **M2 — Persistence + Authentication:** complete in code; production DB/browser validation pending.
+- **M3 — Delivery Workspace:** complete in code; live database/browser validation pending.
 - **M4 — AI Layer:** provider abstraction, structured AI planning/review, approval boundaries.
 - **M5 — GitHub Integration:** repository, issue, commit and PR context.
 - **M6 — Production Readiness:** E2E, abuse controls, observability, backup/restore and public demo.

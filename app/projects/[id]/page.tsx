@@ -1,17 +1,19 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { requireSession } from "@/src/auth/session";
-import { getProject } from "@/src/repositories/projects";
+import { getDeliveryWorkspace } from "@/src/repositories/delivery";
 import type { ProjectPlan } from "@/src/domain/project-plan";
 import { ProjectActions } from "./ProjectActions";
+import { DeliveryWorkspace } from "./components/DeliveryWorkspace";
 
 type Props = { params: Promise<{ id: string }> };
 
 export default async function ProjectPage({ params }: Props) {
   const session = await requireSession();
   const { id } = await params;
-  const project = await getProject(session.userId, id);
-  if (!project) notFound();
+  const workspace = await getDeliveryWorkspace(session.userId, id);
+  if (!workspace) notFound();
+  const { project } = workspace;
   const plan = project.plan as ProjectPlan | null;
 
   return (
@@ -53,6 +55,30 @@ export default async function ProjectPage({ params }: Props) {
           ) : <p>Nenhum plano salvo.</p>}
         </section>
       </section>
+
+      <DeliveryWorkspace
+        projectId={project.id}
+        requirements={workspace.requirements.map((item) => ({
+          id: item.id,
+          title: item.title,
+          description: item.description,
+          acceptanceCriteria: item.acceptanceCriteria,
+          priority: item.priority,
+        }))}
+        tasks={workspace.tasks.map((item) => ({
+          id: item.id,
+          requirementId: item.requirementId,
+          title: item.title,
+          description: item.description,
+          status: item.status,
+        }))}
+        activity={workspace.activity.map((item) => ({
+          id: item.id,
+          type: item.type,
+          payload: item.payload,
+          createdAt: item.createdAt.toISOString(),
+        }))}
+      />
     </main>
   );
 }

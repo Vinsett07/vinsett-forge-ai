@@ -8,7 +8,7 @@
 - Database schema seed.
 - CI.
 
-## M2 — Persistence + Authentication ✅ code complete
+## M2 — Persistence + Authentication ✅
 - PostgreSQL connection and migration.
 - User registration/login/logout.
 - Password hashing and signed HttpOnly sessions.
@@ -16,11 +16,12 @@
 - Saved planning snapshot V1.
 - Auth/domain automated tests.
 
-## M3 — Delivery Workspace
-- Requirements and acceptance criteria.
-- Epic/story/task model.
-- Kanban board.
-- Activity history.
+## M3 — Delivery Workspace ✅ code complete
+- Requirements with priority and acceptance criteria.
+- Tasks optionally linked to requirements.
+- Five-stage Kanban workflow.
+- Activity history for project, requirement and task changes.
+- Owner-scoped delivery APIs and repository boundaries.
 
 ## M4 — AI Layer
 - Provider abstraction.
