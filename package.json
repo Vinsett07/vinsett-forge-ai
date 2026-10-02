@@ -1,6 +1,6 @@
 {
   "name": "vinsett-forge-ai",
-  "version": "0.4.0",
+  "version": "0.6.0",
   "private": true,
   "description": "AI-assisted software project planning and delivery workspace.",
   "engines": {
@@ -13,7 +13,9 @@
     "lint": "eslint .",
     "typecheck": "tsc --noEmit",
     "test": "node --test --experimental-strip-types tests/*.test.ts",
-    "test:watch": "node --test --watch --experimental-strip-types tests/*.test.ts"
+    "test:watch": "node --test --watch --experimental-strip-types tests/*.test.ts",
+    "test:e2e": "playwright test",
+    "db:migrate": "node scripts/migrate.mjs"
   },
   "dependencies": {
     "drizzle-orm": "0.45.3",
@@ -28,7 +30,8 @@
     "@types/react-dom": "19.2.2",
     "eslint": "9.38.0",
     "eslint-config-next": "16.3.8",
-    "typescript": "5.9.3"
+    "typescript": "5.9.3",
+    "@playwright/test": "1.63.0"
   },
   "type": "module"
 }

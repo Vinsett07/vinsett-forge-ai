@@ -20,16 +20,16 @@ export default function HomePage() {
           <a className="secondary" href="#arquitetura">Ver arquitetura do produto</a>
         </div>
         <div className="signal-grid" aria-label="Indicadores do milestone">
-          <div><strong>01</strong><span>Briefing validado</span></div>
-          <div><strong>04</strong><span>Artefatos de planejamento</span></div>
-          <div><strong>100%</strong><span>Regras de domínio testáveis</span></div>
+          <div><strong>06</strong><span>Milestones construídos</span></div>
+          <div><strong>18+</strong><span>Testes automatizados</span></div>
+          <div><strong>HITL</strong><span>IA com aprovação humana</span></div>
         </div>
       </section>
 
       <section className="shell section" id="arquitetura">
         <div className="section-heading">
-          <span>Milestone 2</span>
-          <h2>Persistência e identidade antes de escala.</h2>
+          <span>Milestone 6</span>
+          <h2>Planejamento, execução, IA e contexto de engenharia no mesmo workspace.</h2>
         </div>
         <div className="card-grid">
           {capabilities.map(([title, text]) => (

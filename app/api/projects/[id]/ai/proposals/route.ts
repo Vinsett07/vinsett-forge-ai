@@ -1,4 +1,5 @@
 import { NextResponse } from "next/server";
+import { consumeRateLimit } from "@/src/security/rate-limit";
 import { getSession } from "@/src/auth/session";
 import { generateWorkspaceProposal } from "@/src/ai/provider";
 import { getDeliveryWorkspace } from "@/src/repositories/delivery";
@@ -18,6 +19,8 @@ export async function POST(_: Request, context: Context) {
   const session = await getSession();
   if (!session) return NextResponse.json({ error: "unauthorized" }, { status: 401 });
   const { id } = await context.params;
+  const rate = consumeRateLimit(`ai:${session.userId}:${id}`, { limit: 12, windowMs: 60 * 60 * 1000 });
+  if (!rate.allowed) return NextResponse.json({ error: "rate_limited", resetAt: rate.resetAt }, { status: 429 });
   const workspace = await getDeliveryWorkspace(session.userId, id);
   if (!workspace) return NextResponse.json({ error: "not_found" }, { status: 404 });
 

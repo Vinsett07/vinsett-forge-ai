@@ -1,5 +1,8 @@
 # VINSETT Forge AI
 
+## Current release
+
+**v0.6.0 — M1 through M6 code complete.** The product includes authenticated project workspaces, human-reviewed AI planning, delivery/Kanban, read-only GitHub context, release-readiness checks, operational health/security controls and CI/E2E specifications. Public deployment evidence is still a separate release gate.
 **VINSETT Forge AI** is an AI-assisted software delivery workspace that turns a product idea into a traceable project: briefing, planning snapshots, requirements, backlog, Kanban execution, audit history and human-reviewed AI proposals.
 
 **Current version:** `0.4.0` — Milestone 4 AI layer.
@@ -163,3 +166,11 @@ docs/
 ## Security posture
 
 This repository contains no real API keys, database credentials or production session secrets. Project authorization is enforced at the repository boundary. AI-generated output is locally validated and remains pending until a human explicitly approves it. See [`docs/ARCHITECTURE.md`](docs/ARCHITECTURE.md) and [`docs/AI_LAYER.md`](docs/AI_LAYER.md).
+
+
+## Operations and portfolio
+
+- GitHub integration: `docs/GITHUB_INTEGRATION.md`
+- Production runbook: `docs/OPERATIONS.md`
+- Portfolio case study: `docs/PORTFOLIO_CASE_STUDY.md`
+- Validation evidence: `docs/VALIDATION.md`

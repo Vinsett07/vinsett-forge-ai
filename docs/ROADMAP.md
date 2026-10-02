@@ -32,15 +32,20 @@
 - Explicit approve/reject flow.
 - Atomic application of approved plan + snapshot + requirements + tasks.
 
-## M5 — GitHub Integration
-- Repository linking.
-- Issue synchronization.
-- Commit/PR context.
-- Release readiness dashboard.
+## M5 — GitHub Integration ✅ code complete
+- Read-only repository linking and unlinking.
+- Issues, pull requests, commits and GitHub Actions synchronization.
+- Sync history and activity audit events.
+- Release-readiness checks based on observable repository state.
+- Optional server-side GitHub token; public repositories work anonymously.
 
-## M6 — Production Readiness
-- E2E tests.
-- Rate limiting and abuse controls.
-- Observability.
-- Backup/restore procedure.
-- Public demo environment and portfolio case study.
+## M6 — Production Readiness ✅ code complete / external deploy pending
+- Playwright browser smoke specifications.
+- Authentication, AI and GitHub sync abuse guards.
+- Security response headers.
+- Database-aware `/api/health` endpoint.
+- PostgreSQL migration runner and CI service database.
+- Production build + E2E GitHub Actions pipeline.
+- Backup/restore runbook, Dockerfile and Netlify configuration.
+- Portfolio case study.
+- Public production deployment remains an external release gate.
