@@ -3,10 +3,12 @@ import { notFound } from "next/navigation";
 import { requireSession } from "@/src/auth/session";
 import { getDeliveryWorkspace } from "@/src/repositories/delivery";
 import { listAiProposals } from "@/src/repositories/ai-proposals";
+import { getGitHubIntegration } from "@/src/repositories/github-integrations";
 import type { ProjectPlan } from "@/src/domain/project-plan";
 import { ProjectActions } from "./ProjectActions";
 import { DeliveryWorkspace } from "./components/DeliveryWorkspace";
 import { AIProposalPanel } from "./components/AIProposalPanel";
+import { GitHubIntegrationPanel } from "./components/GitHubIntegrationPanel";
 
 type Props = { params: Promise<{ id: string }> };
 
@@ -18,6 +20,7 @@ export default async function ProjectPage({ params }: Props) {
   const { project } = workspace;
   const plan = project.plan as ProjectPlan | null;
   const aiProposals = await listAiProposals(session.userId, id) ?? [];
+  const github = await getGitHubIntegration(session.userId, id);
 
   return (
     <main className="shell workspace project-detail">
@@ -70,6 +73,21 @@ export default async function ProjectPage({ params }: Props) {
           proposal: item.proposal,
           createdAt: item.createdAt.toISOString(),
         }))}
+      />
+
+      <GitHubIntegrationPanel
+        projectId={project.id}
+        integration={github?.integration ? {
+          repositoryFullName: github.integration.repositoryFullName,
+          repositoryUrl: github.integration.repositoryUrl,
+          defaultBranch: github.integration.defaultBranch,
+          visibility: github.integration.visibility,
+          syncStatus: github.integration.syncStatus,
+          lastError: github.integration.lastError,
+          snapshot: github.integration.snapshot,
+          lastSyncedAt: github.integration.lastSyncedAt?.toISOString() ?? null,
+        } : null}
+        readiness={github?.readiness ?? []}
       />
 
       <DeliveryWorkspace

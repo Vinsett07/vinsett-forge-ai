@@ -47,3 +47,7 @@ export async function requireSession(): Promise<SessionPayload> {
   if (!session) redirect("/auth");
   return session;
 }
+
+export async function requireApiSession(): Promise<SessionPayload | null> {
+  return getSession();
+}

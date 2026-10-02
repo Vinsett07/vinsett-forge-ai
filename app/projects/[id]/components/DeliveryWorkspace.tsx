@@ -44,6 +44,10 @@ const activityLabels: Record<string, string> = {
   "ai.proposal_created": "Proposta de IA criada",
   "ai.proposal_approved": "Proposta de IA aprovada",
   "ai.proposal_rejected": "Proposta de IA rejeitada",
+  "github.linked": "Repositório GitHub conectado",
+  "github.synced": "GitHub sincronizado",
+  "github.sync_failed": "Falha na sincronização GitHub",
+  "github.unlinked": "Repositório GitHub desconectado",
 };
 
 export function DeliveryWorkspace({

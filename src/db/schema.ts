@@ -1,10 +1,12 @@
 import { integer, jsonb, pgEnum, pgTable, text, timestamp, uniqueIndex, uuid } from "drizzle-orm/pg-core";
 import type { AiWorkspaceProposal } from "@/src/domain/ai-proposal";
+import type { GitHubRepositorySnapshot } from "@/src/domain/github";
 
 export const projectStatus = pgEnum("project_status", ["draft", "active", "paused", "done"]);
 export const requirementPriority = pgEnum("requirement_priority", ["must", "should", "could"]);
 export const taskStatus = pgEnum("task_status", ["backlog", "ready", "in_progress", "review", "done"]);
 export const aiProposalStatus = pgEnum("ai_proposal_status", ["pending", "approved", "rejected"]);
+export const githubSyncStatus = pgEnum("github_sync_status", ["never", "ok", "error"]);
 
 export const users = pgTable("users", {
   id: uuid("id").defaultRandom().primaryKey(),
@@ -86,5 +88,35 @@ export const aiProposals = pgTable("ai_proposals", {
   proposal: jsonb("proposal").$type<AiWorkspaceProposal>().notNull(),
   decidedByUserId: uuid("decided_by_user_id").references(() => users.id, { onDelete: "set null" }),
   decidedAt: timestamp("decided_at", { withTimezone: true }),
+  createdAt: timestamp("created_at", { withTimezone: true }).defaultNow().notNull(),
+});
+
+
+export const githubIntegrations = pgTable("github_integrations", {
+  id: uuid("id").defaultRandom().primaryKey(),
+  projectId: uuid("project_id").notNull().references(() => projects.id, { onDelete: "cascade" }),
+  repositoryOwner: text("repository_owner").notNull(),
+  repositoryName: text("repository_name").notNull(),
+  repositoryFullName: text("repository_full_name").notNull(),
+  repositoryUrl: text("repository_url").notNull(),
+  defaultBranch: text("default_branch").notNull(),
+  visibility: text("visibility").notNull(),
+  syncStatus: githubSyncStatus("sync_status").default("never").notNull(),
+  lastError: text("last_error"),
+  snapshot: jsonb("snapshot").$type<GitHubRepositorySnapshot>(),
+  lastSyncedAt: timestamp("last_synced_at", { withTimezone: true }),
+  createdAt: timestamp("created_at", { withTimezone: true }).defaultNow().notNull(),
+  updatedAt: timestamp("updated_at", { withTimezone: true }).defaultNow().notNull(),
+}, (table) => ({
+  projectUnique: uniqueIndex("github_integrations_project_unique").on(table.projectId),
+}));
+
+export const githubSyncs = pgTable("github_syncs", {
+  id: uuid("id").defaultRandom().primaryKey(),
+  integrationId: uuid("integration_id").notNull().references(() => githubIntegrations.id, { onDelete: "cascade" }),
+  projectId: uuid("project_id").notNull().references(() => projects.id, { onDelete: "cascade" }),
+  status: githubSyncStatus("status").notNull(),
+  snapshot: jsonb("snapshot").$type<GitHubRepositorySnapshot>(),
+  error: text("error"),
   createdAt: timestamp("created_at", { withTimezone: true }).defaultNow().notNull(),
 });
