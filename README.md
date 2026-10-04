@@ -2,7 +2,7 @@
 
 [![CI](https://github.com/Vinsett07/vinsett-forge-ai/actions/workflows/ci.yml/badge.svg)](https://github.com/Vinsett07/vinsett-forge-ai/actions/workflows/ci.yml)
 
-**v0.6.1 — repository recovery and release validation.**
+**v0.6.2 — managed Netlify database and AI Gateway deployment.**
 
 VINSETT Forge AI turns a product brief into a traceable software project: versioned plans, requirements, acceptance criteria, tasks, Kanban and an audit trail. AI-generated scope remains pending until the project owner explicitly approves it.
 
@@ -55,7 +55,7 @@ node --env-file=.env.local scripts/migrate.mjs
 npm run dev
 ```
 
-The migration command above explicitly loads `.env.local`; `npm run db:migrate` expects exported environment variables. The migrations are idempotent SQL files; this is not a migration-ledger system. Back up production before changing schema.
+The migration command above explicitly loads `.env.local`; `npm run db:migrate` expects exported environment variables. Both it and Netlify use the idempotent SQL files under `netlify/database/migrations`. Netlify manages production migration tracking and publication. Back up production before changing schema.
 
 ## Validate
 

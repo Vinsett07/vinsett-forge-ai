@@ -8,6 +8,7 @@ coverage/
 *.log
 .DS_Store
 .vercel/
+.netlify/
 
 *.tsbuildinfo
 playwright-report/

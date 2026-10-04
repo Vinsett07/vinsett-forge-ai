@@ -53,7 +53,10 @@ export async function generateWorkspaceProposal(brief: ProjectBrief, context: Pl
   }
 
   const model = process.env.OPENAI_MODEL?.trim() || "gpt-6-astra";
-  const response = await fetch("https://api.openai.com/v1/responses", {
+  // Netlify AI Gateway injects a base URL and a server-only API key.
+  const baseUrl = (process.env.OPENAI_BASE_URL?.trim() || "https://api.openai.com/v1").replace(/\/+$/, "");
+  const responsesUrl = `${baseUrl.endsWith("/v1") ? baseUrl : `${baseUrl}/v1`}/responses`;
+  const response = await fetch(responsesUrl, {
     method: "POST",
     headers: { authorization: `Bearer ${apiKey}`, "content-type": "application/json" },
     body: JSON.stringify({
