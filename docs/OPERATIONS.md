@@ -52,7 +52,7 @@ Validate `/api/health`, user/project counts and at least one representative proj
 
 ## Deployment
 
-The Forge project is `vinsett-forge-ai` (`76d970c3-c6e5-4fa9-a669-0bda1640ceb4`), separate from Academy. `netlify.toml` pins Node 22, the production build command and `.next` output. The Next.js adapter handles dynamic routes. Configure secrets with function scope in the hosting provider rather than committing `.env` files. Installing `@netlify/database` enables managed database provisioning during deployment.
+The Forge project is `vinsett-forge-ai` (`76d970c3-c6e5-4fa9-a669-0bda1640ceb4`), separate from Academy. `netlify.toml` pins Node 22, the production build command and `.next` output, and explicitly enables the Next.js adapter for uploads. Configure secrets in project environment variables rather than committing `.env` files. This Free-plan project uses the standard environment scopes; no secret is prefixed with `NEXT_PUBLIC_`. Always read back configuration and validate the runtime: the connector can report a successful upsert even when an unsupported scope was not saved. Installing `@netlify/database` enables managed database provisioning during deployment.
 
 Production configuration: `SESSION_SECRET` (random, 32+ characters), `AI_PROVIDER=openai`, `OPENAI_MODEL=gpt-6-astra`, `APP_VERSION=0.6.2`. The gateway key, base URL and database connection are supplied by Netlify. Validate a real proposal's `provider`, `model` and response ID; a deterministic fallback does not validate external AI.
 

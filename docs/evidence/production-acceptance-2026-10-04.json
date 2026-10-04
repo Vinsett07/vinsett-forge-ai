@@ -1,0 +1,219 @@
+{
+  "baseUrl": "https://vinsett-forge-ai.netlify.app",
+  "checks": [
+    {
+      "method": "GET",
+      "path": "/api/health",
+      "status": 200,
+      "expected": 200,
+      "seconds": 7.67
+    },
+    {
+      "method": "POST",
+      "path": "/api/auth/register",
+      "status": 201,
+      "expected": 201,
+      "seconds": 5.95
+    },
+    {
+      "method": "GET",
+      "path": "/api/auth/me",
+      "status": 200,
+      "expected": 200,
+      "seconds": 5.57
+    },
+    {
+      "method": "POST",
+      "path": "/api/projects",
+      "status": 201,
+      "expected": 201,
+      "seconds": 5.77
+    },
+    {
+      "method": "GET",
+      "path": "/api/projects/fe9cd4f4-ac99-4d4f-b18c-a0f37d49b5a3",
+      "status": 200,
+      "expected": 200,
+      "seconds": 6.02
+    },
+    {
+      "method": "POST",
+      "path": "/api/projects/fe9cd4f4-ac99-4d4f-b18c-a0f37d49b5a3/requirements",
+      "status": 201,
+      "expected": 201,
+      "seconds": 6.09
+    },
+    {
+      "method": "POST",
+      "path": "/api/projects/fe9cd4f4-ac99-4d4f-b18c-a0f37d49b5a3/tasks",
+      "status": 201,
+      "expected": 201,
+      "seconds": 5.98
+    },
+    {
+      "method": "PATCH",
+      "path": "/api/projects/fe9cd4f4-ac99-4d4f-b18c-a0f37d49b5a3/tasks/0f64a49a-25ec-4411-810d-89bf4ee545d8",
+      "status": 200,
+      "expected": 200,
+      "seconds": 5.81
+    },
+    {
+      "method": "POST",
+      "path": "/api/projects/fe9cd4f4-ac99-4d4f-b18c-a0f37d49b5a3/github/link",
+      "status": 201,
+      "expected": 201,
+      "seconds": 6.35
+    },
+    {
+      "method": "POST",
+      "path": "/api/projects/fe9cd4f4-ac99-4d4f-b18c-a0f37d49b5a3/github/sync",
+      "status": 200,
+      "expected": 200,
+      "seconds": 6.94
+    },
+    {
+      "method": "POST",
+      "path": "/api/projects/fe9cd4f4-ac99-4d4f-b18c-a0f37d49b5a3/ai/proposals",
+      "status": 201,
+      "expected": 201,
+      "seconds": 29.56
+    },
+    {
+      "method": "GET",
+      "path": "/projects/fe9cd4f4-ac99-4d4f-b18c-a0f37d49b5a3",
+      "status": 200,
+      "expected": 200,
+      "seconds": 6.23
+    },
+    {
+      "method": "GET",
+      "path": "/api/health",
+      "status": 200,
+      "expected": 200,
+      "seconds": 8.33
+    },
+    {
+      "method": "GET",
+      "path": "/api/auth/me",
+      "status": 200,
+      "expected": 200,
+      "seconds": 7.42
+    },
+    {
+      "method": "GET",
+      "path": "/api/projects/fe9cd4f4-ac99-4d4f-b18c-a0f37d49b5a3",
+      "status": 200,
+      "expected": 200,
+      "seconds": 5.35
+    },
+    {
+      "method": "PATCH",
+      "path": "/api/projects/fe9cd4f4-ac99-4d4f-b18c-a0f37d49b5a3/tasks/0f64a49a-25ec-4411-810d-89bf4ee545d8",
+      "status": 200,
+      "expected": 200,
+      "seconds": 6.13
+    },
+    {
+      "method": "POST",
+      "path": "/api/projects/fe9cd4f4-ac99-4d4f-b18c-a0f37d49b5a3/github/sync",
+      "status": 200,
+      "expected": 200,
+      "seconds": 6.22
+    },
+    {
+      "method": "GET",
+      "path": "/api/projects/fe9cd4f4-ac99-4d4f-b18c-a0f37d49b5a3/ai/proposals",
+      "status": 200,
+      "expected": 200,
+      "seconds": 6.84
+    },
+    {
+      "method": "GET",
+      "path": "/projects/fe9cd4f4-ac99-4d4f-b18c-a0f37d49b5a3",
+      "status": 200,
+      "expected": 200,
+      "seconds": 7.06
+    },
+    {
+      "method": "PATCH",
+      "path": "/api/projects/fe9cd4f4-ac99-4d4f-b18c-a0f37d49b5a3/ai/proposals/3205f828-f4f9-429d-b05b-4f18b957efc0",
+      "status": 200,
+      "expected": 200,
+      "seconds": 6.89
+    },
+    {
+      "method": "PATCH",
+      "path": "/api/projects/fe9cd4f4-ac99-4d4f-b18c-a0f37d49b5a3/ai/proposals/3205f828-f4f9-429d-b05b-4f18b957efc0",
+      "status": 409,
+      "expected": 409,
+      "seconds": 5.76
+    },
+    {
+      "method": "POST",
+      "path": "/api/auth/logout",
+      "status": 200,
+      "expected": 200,
+      "seconds": 5.74
+    },
+    {
+      "method": "GET",
+      "path": "/api/projects/fe9cd4f4-ac99-4d4f-b18c-a0f37d49b5a3",
+      "status": 401,
+      "expected": 401,
+      "seconds": 6.64
+    },
+    {
+      "method": "POST",
+      "path": "/api/auth/login",
+      "status": 200,
+      "expected": 200,
+      "seconds": 5.86
+    },
+    {
+      "method": "GET",
+      "path": "/projects/fe9cd4f4-ac99-4d4f-b18c-a0f37d49b5a3",
+      "status": 200,
+      "expected": 200,
+      "seconds": 6.25
+    }
+  ],
+  "health": {
+    "status": "ok",
+    "version": "0.6.2",
+    "checks": {
+      "runtime": {
+        "ok": true
+      },
+      "sessionSecret": {
+        "ok": true,
+        "detail": "SESSION_SECRET >= 32 chars"
+      },
+      "databaseUrl": {
+        "ok": true,
+        "detail": "database connection configured"
+      },
+      "database": {
+        "ok": true
+      }
+    },
+    "latencyMs": 54
+  },
+  "secureCookie": true,
+  "github": {
+    "state": "ok",
+    "repository": "Vinsett07/vinsett-forge-ai",
+    "commits": 20,
+    "pullRequests": 2,
+    "syncedAt": "2026-10-04T23:57:01.331Z"
+  },
+  "ai": {
+    "provider": "openai",
+    "model": "gpt-6-astra",
+    "providerResponseId": "resp_0cffde1c564d7668016ac2e76e85e887d18616532c9199218b",
+    "status": "approved",
+    "snapshotVersion": 2
+  },
+  "persistenceAfterLogin": true,
+  "fixtureProjectId": "fe9cd4f4-ac99-4d4f-b18c-a0f37d49b5a3",
+  "completedAt": "2026-10-04T23:57:52Z"
+}
