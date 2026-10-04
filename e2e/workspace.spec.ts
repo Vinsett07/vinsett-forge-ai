@@ -54,6 +54,7 @@ test("authenticated workspace persists delivery and requires an owner decision f
   await expect(page.locator(".requirement-card")).toHaveCount(1);
   await expect(page.locator(".task-card")).toHaveCount(1);
   const proposalResponse = await page.request.get(`${projectApi}/ai/proposals`);
+  expect(proposalResponse.status()).toBe(200);
   const { proposals: [pending] } = await proposalResponse.json();
   expect(pending.provider).toBe("deterministic");
 
