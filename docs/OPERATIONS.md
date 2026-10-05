@@ -34,7 +34,9 @@ The canonical SQL migrations are under `netlify/database/migrations/<number>_<sl
 
 ## Backup and restore
 
-Netlify Database automatically takes daily backups and a backup when publishing production. Manage snapshots in the Forge project's Database dashboard. A restore rehearsal must target an isolated database branch: the REST snapshot restore endpoint accepts `branch_name`, while a dashboard production restore replaces the live database. Verify the target before restoring.
+Netlify Database automatically takes daily backups and a backup when publishing production. Manage snapshots in the Forge project's Database dashboard. A restore rehearsal must target an isolated database branch. Check the current OpenAPI schema for the explicit target parameter: the version used on 2026-10-05 specifies `branch_id`, while the prose documentation still mentions `branch_name`. Never omit the target or restore over production for a rehearsal.
+
+The [2026-10-05 rehearsal](BACKUP_RESTORE_2026-10-05.md) passed full table/schema comparison, a restoration probe and all 13 relationship checks. Netlify preserved the pre-restore test state as a second branch. The tested management API requires the dashboard to delete these branches, and its production connection was read-only. Cleanup remains recorded in the rehearsal report; do not assume a requested owner role grants production write access.
 
 For a PostgreSQL logical backup with an authorized connection string:
 

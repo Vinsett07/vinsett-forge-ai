@@ -1,0 +1,313 @@
+{
+  "status": "restore_verified_cleanup_pending",
+  "siteId": "76d970c3-c6e5-4fa9-a669-0bda1640ceb4",
+  "siteUrl": "https://vinsett-forge-ai.netlify.app",
+  "sourceBackup": {
+    "id": "snap-fancy-voice-b5tu3x8l",
+    "source_branch_id": "br-nameless-block-b5wxo29j",
+    "created_at": "2026-10-05T00:02:34Z",
+    "manual": true
+  },
+  "restoreOperation": {
+    "snapshotId": "snap-fancy-voice-b5tu3x8l",
+    "branchId": "restore-rehearsal-20261005",
+    "startedAt": "2026-10-05T16:35:39.216Z",
+    "completedAt": "2026-10-05T16:35:49.867Z",
+    "httpStatus": 200
+  },
+  "probeBeforeRestore": {
+    "branchId": "restore-rehearsal-20261005",
+    "branchState": "ready",
+    "separateEndpointVerified": true,
+    "markerCreated": true,
+    "syntheticTaskChangedTo": "backlog",
+    "createdAt": "2026-10-05T16:33:29.392Z"
+  },
+  "probeAfterRestore": {
+    "marker_removed": true,
+    "restored_task_status": "done",
+    "checkedAt": "2026-10-05T16:38:23.969Z"
+  },
+  "productionBefore": {
+    "checkedAt": "2026-10-05T16:29:26.620Z",
+    "readOnly": true,
+    "tables": {
+      "users": {
+        "count": 1,
+        "fingerprint": "4d8393f2ed74534cef1c4a713f806bcb"
+      },
+      "projects": {
+        "count": 1,
+        "fingerprint": "2ee7a7b0e6c2ba8c4ced4d45e3270275"
+      },
+      "plan_snapshots": {
+        "count": 2,
+        "fingerprint": "e2bf2cc6e5fc513b35683688e35f8833"
+      },
+      "requirements": {
+        "count": 4,
+        "fingerprint": "e23e9fbb5fd62e33ea3fe311dc40c81e"
+      },
+      "tasks": {
+        "count": 7,
+        "fingerprint": "2b2365945298873d5a5a1cfafa577ea1"
+      },
+      "activity_events": {
+        "count": 9,
+        "fingerprint": "545de38cbc54bea19d94a03f62ef9d23"
+      },
+      "ai_proposals": {
+        "count": 1,
+        "fingerprint": "a1d60cc2be7a1f4bb1bb2392ce0511cf"
+      },
+      "github_integrations": {
+        "count": 1,
+        "fingerprint": "70f9dc6013886733f40abff598938832"
+      },
+      "github_syncs": {
+        "count": 3,
+        "fingerprint": "9b843927f15dfd72b213d3eccf167b62"
+      }
+    },
+    "schemaSha256": "42fa62b760f4d3ac72c085edfd7854396a9ec4812cde09b4658b6debf7ad9372",
+    "schemaColumnCount": 78,
+    "validatedForeignKeys": 13,
+    "unvalidatedConstraints": 0,
+    "orphanCounts": {
+      "projects.owner_id": 0,
+      "plan_snapshots.project_id": 0,
+      "requirements.project_id": 0,
+      "tasks.project_id": 0,
+      "tasks.requirement_id": 0,
+      "activity_events.project_id": 0,
+      "activity_events.actor_user_id": 0,
+      "ai_proposals.project_id": 0,
+      "ai_proposals.created_by_user_id": 0,
+      "ai_proposals.decided_by_user_id": 0,
+      "github_integrations.project_id": 0,
+      "github_syncs.integration_id": 0,
+      "github_syncs.project_id": 0
+    },
+    "fixture": {
+      "project_with_owner": 1,
+      "completed_task": 1,
+      "plan_versions": [
+        1,
+        2
+      ],
+      "approved_ai_proposal": 1,
+      "github_integration": 1,
+      "github_syncs": 3,
+      "requirements": 4,
+      "activities": 9
+    }
+  },
+  "restoredDatabase": {
+    "checkedAt": "2026-10-05T16:37:43.596Z",
+    "readOnly": true,
+    "tables": {
+      "users": {
+        "count": 1,
+        "fingerprint": "4d8393f2ed74534cef1c4a713f806bcb"
+      },
+      "projects": {
+        "count": 1,
+        "fingerprint": "2ee7a7b0e6c2ba8c4ced4d45e3270275"
+      },
+      "plan_snapshots": {
+        "count": 2,
+        "fingerprint": "e2bf2cc6e5fc513b35683688e35f8833"
+      },
+      "requirements": {
+        "count": 4,
+        "fingerprint": "e23e9fbb5fd62e33ea3fe311dc40c81e"
+      },
+      "tasks": {
+        "count": 7,
+        "fingerprint": "2b2365945298873d5a5a1cfafa577ea1"
+      },
+      "activity_events": {
+        "count": 9,
+        "fingerprint": "545de38cbc54bea19d94a03f62ef9d23"
+      },
+      "ai_proposals": {
+        "count": 1,
+        "fingerprint": "a1d60cc2be7a1f4bb1bb2392ce0511cf"
+      },
+      "github_integrations": {
+        "count": 1,
+        "fingerprint": "70f9dc6013886733f40abff598938832"
+      },
+      "github_syncs": {
+        "count": 3,
+        "fingerprint": "9b843927f15dfd72b213d3eccf167b62"
+      }
+    },
+    "schemaSha256": "42fa62b760f4d3ac72c085edfd7854396a9ec4812cde09b4658b6debf7ad9372",
+    "schemaColumnCount": 78,
+    "validatedForeignKeys": 13,
+    "unvalidatedConstraints": 0,
+    "orphanCounts": {
+      "projects.owner_id": 0,
+      "plan_snapshots.project_id": 0,
+      "requirements.project_id": 0,
+      "tasks.project_id": 0,
+      "tasks.requirement_id": 0,
+      "activity_events.project_id": 0,
+      "activity_events.actor_user_id": 0,
+      "ai_proposals.project_id": 0,
+      "ai_proposals.created_by_user_id": 0,
+      "ai_proposals.decided_by_user_id": 0,
+      "github_integrations.project_id": 0,
+      "github_syncs.integration_id": 0,
+      "github_syncs.project_id": 0
+    },
+    "fixture": {
+      "project_with_owner": 1,
+      "completed_task": 1,
+      "plan_versions": [
+        1,
+        2
+      ],
+      "approved_ai_proposal": 1,
+      "github_integration": 1,
+      "github_syncs": 3,
+      "requirements": 4,
+      "activities": 9
+    }
+  },
+  "productionAfter": {
+    "checkedAt": "2026-10-05T16:38:36.204Z",
+    "readOnly": true,
+    "tables": {
+      "users": {
+        "count": 1,
+        "fingerprint": "4d8393f2ed74534cef1c4a713f806bcb"
+      },
+      "projects": {
+        "count": 1,
+        "fingerprint": "2ee7a7b0e6c2ba8c4ced4d45e3270275"
+      },
+      "plan_snapshots": {
+        "count": 2,
+        "fingerprint": "e2bf2cc6e5fc513b35683688e35f8833"
+      },
+      "requirements": {
+        "count": 4,
+        "fingerprint": "e23e9fbb5fd62e33ea3fe311dc40c81e"
+      },
+      "tasks": {
+        "count": 7,
+        "fingerprint": "2b2365945298873d5a5a1cfafa577ea1"
+      },
+      "activity_events": {
+        "count": 9,
+        "fingerprint": "545de38cbc54bea19d94a03f62ef9d23"
+      },
+      "ai_proposals": {
+        "count": 1,
+        "fingerprint": "a1d60cc2be7a1f4bb1bb2392ce0511cf"
+      },
+      "github_integrations": {
+        "count": 1,
+        "fingerprint": "70f9dc6013886733f40abff598938832"
+      },
+      "github_syncs": {
+        "count": 3,
+        "fingerprint": "9b843927f15dfd72b213d3eccf167b62"
+      }
+    },
+    "schemaSha256": "42fa62b760f4d3ac72c085edfd7854396a9ec4812cde09b4658b6debf7ad9372",
+    "schemaColumnCount": 78,
+    "validatedForeignKeys": 13,
+    "unvalidatedConstraints": 0,
+    "orphanCounts": {
+      "projects.owner_id": 0,
+      "plan_snapshots.project_id": 0,
+      "requirements.project_id": 0,
+      "tasks.project_id": 0,
+      "tasks.requirement_id": 0,
+      "activity_events.project_id": 0,
+      "activity_events.actor_user_id": 0,
+      "ai_proposals.project_id": 0,
+      "ai_proposals.created_by_user_id": 0,
+      "ai_proposals.decided_by_user_id": 0,
+      "github_integrations.project_id": 0,
+      "github_syncs.integration_id": 0,
+      "github_syncs.project_id": 0
+    },
+    "fixture": {
+      "project_with_owner": 1,
+      "completed_task": 1,
+      "plan_versions": [
+        1,
+        2
+      ],
+      "approved_ai_proposal": 1,
+      "github_integration": 1,
+      "github_syncs": 3,
+      "requirements": 4,
+      "activities": 9
+    }
+  },
+  "comparison": {
+    "checkedAt": "2026-10-05T16:39:32.878Z",
+    "allNineTableCountsAndFingerprintsMatch": true,
+    "schemaMatches": true,
+    "representativeProjectMatches": true,
+    "productionUnchanged": true,
+    "markerRemoved": true,
+    "syntheticTaskRestored": true,
+    "foreignKeysValidated": 13,
+    "orphanCount": 0
+  },
+  "cleanup": {
+    "temporaryBranches": {
+      "status": "blocked",
+      "removed": [],
+      "remainingTemporaryBranches": [
+        "restore-rehearsal-20261005",
+        "old-restore-rehearsal-20261005"
+      ],
+      "httpStatus": 401,
+      "message": "This operation must be performed from the Netlify dashboard."
+    },
+    "syntheticFixture": {
+      "status": "blocked",
+      "syntheticAccountRemoved": false,
+      "syntheticProjectRemoved": false,
+      "returnedDatabaseRole": "netlifydb_readonly",
+      "canDeleteUsers": false,
+      "message": "The production management connection remains read-only even when the owner role is requested."
+    }
+  },
+  "healthAfter": {
+    "checkedAt": "2026-10-05T16:42:07.153Z",
+    "status": "ok",
+    "version": "0.6.2",
+    "checks": {
+      "runtime": {
+        "ok": true
+      },
+      "sessionSecret": {
+        "ok": true,
+        "detail": "SESSION_SECRET >= 32 chars"
+      },
+      "databaseUrl": {
+        "ok": true,
+        "detail": "database connection configured"
+      },
+      "database": {
+        "ok": true
+      }
+    },
+    "latencyMs": 214,
+    "httpStatus": 200
+  },
+  "historicalTags": {
+    "localAnnotatedTagObjectsVerified": 6,
+    "remoteTagRefs": 0,
+    "published": false,
+    "blocker": "GitHub CLI login was interrupted by an environment network-policy denial for api.github.com. Escalation was rejected by the execution approval policy. No Git credential was saved."
+  }
+}
