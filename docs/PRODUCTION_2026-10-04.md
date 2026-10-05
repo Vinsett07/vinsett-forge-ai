@@ -32,7 +32,11 @@ Production HTTP acceptance completed at `2026-10-04T23:57:52Z`:
 
 Machine-readable, credential-free evidence is in [the acceptance report](evidence/production-acceptance-2026-10-04.json). One external AI request was made; subsequent verification reused the recorded proposal.
 
-## Backup rehearsal still required
+## Backup rehearsal — verified on 2026-10-05
+
+The [2026-10-05 restoration record](BACKUP_RESTORE_2026-10-05.md) supersedes the pending status below. The existing on-publish backup was restored into an isolated branch; all nine table fingerprints and the schema matched, the restoration probe passed, and production remained unchanged. Removal of the two temporary database branches and the synthetic fixture remains access-blocked and is documented in that record.
+
+### Original deployment-day status
 
 Netlify reported on-publish database snapshots. This is evidence that a backup was taken, not evidence of successful restoration. The connected Netlify tools expose deployment/environment operations but no snapshot restore operation. The database dashboard currently requires browser sign-in.
 
