@@ -1,18 +1,18 @@
-# Production Operations — Milestone 6
+# Production Operations — v0.6.2
 
 ## Required environment
 
-- `DATABASE_URL`
+- `DATABASE_URL` for local/CI or a self-managed database. On Netlify, `@netlify/database` supplies the managed connection automatically; do not override it.
 - `SESSION_SECRET` (32+ characters)
 - `AI_PROVIDER` (`deterministic` or `openai`)
-- `OPENAI_API_KEY` when OpenAI is enabled
+- `OPENAI_API_KEY` when OpenAI is enabled. Netlify AI Gateway injects a server-side key and `OPENAI_BASE_URL` automatically on production deploys. Do not add a personal key when using the gateway.
 - `OPENAI_MODEL`
-- optional `GITHUB_TOKEN` for private repositories / higher GitHub API limits
+- optional `GITHUB_TOKEN` for a trusted private installation / higher GitHub API limits. The public Forge site uses anonymous access to public repositories; a shared token must not grant every registered user access to private repositories.
 - `APP_VERSION`
 
 ## Health
 
-`GET /api/health` returns HTTP 200 only when runtime configuration and the database check are healthy; otherwise it returns HTTP 503 with per-check status.
+`GET /api/health` returns HTTP 200 only when the session secret, database connection and all nine application tables are available; otherwise it returns HTTP 503 with per-check status. It does not disclose credentials.
 
 ## Abuse controls
 
@@ -30,11 +30,13 @@ Run:
 npm run db:migrate
 ```
 
-Migrations are ordered SQL files under `db/migrations`.
+The canonical SQL migrations are under `netlify/database/migrations/<number>_<slug>/migration.sql`. Netlify applies them before publishing a production deploy and blocks publication if a migration fails. The local/CI runner uses the same files with an explicit `DATABASE_URL` and deliberately reapplies them to check idempotence.
 
 ## Backup and restore
 
-PostgreSQL backup:
+Netlify Database automatically takes daily backups and a backup when publishing production. Manage snapshots in the Forge project's Database dashboard. A restore rehearsal must target an isolated database branch: the REST snapshot restore endpoint accepts `branch_name`, while a dashboard production restore replaces the live database. Verify the target before restoring.
+
+For a PostgreSQL logical backup with an authorized connection string:
 
 ```bash
 pg_dump --format=custom --no-owner "$DATABASE_URL" > forge.backup
@@ -50,6 +52,8 @@ Validate `/api/health`, user/project counts and at least one representative proj
 
 ## Deployment
 
-Netlify can deploy the Next.js App Router application from a Git provider. `netlify.toml` pins Node 22 and the production build command. Configure environment variables in the hosting provider rather than committing `.env` files.
+The Forge project is `vinsett-forge-ai` (`76d970c3-c6e5-4fa9-a669-0bda1640ceb4`), separate from Academy. `netlify.toml` pins Node 22, the production build command and `.next` output, and explicitly enables the Next.js adapter for uploads. Configure secrets in project environment variables rather than committing `.env` files. This Free-plan project uses the standard environment scopes; no secret is prefixed with `NEXT_PUBLIC_`. Always read back configuration and validate the runtime: the connector can report a successful upsert even when an unsupported scope was not saved. Installing `@netlify/database` enables managed database provisioning during deployment.
+
+Production configuration: `SESSION_SECRET` (random, 32+ characters), `AI_PROVIDER=openai`, `OPENAI_MODEL=gpt-6-astra`, `APP_VERSION=0.6.2`. The gateway key, base URL and database connection are supplied by Netlify. Validate a real proposal's `provider`, `model` and response ID; a deterministic fallback does not validate external AI.
 
 The repository also includes a Dockerfile for providers that run containerized Node applications.

@@ -2,11 +2,11 @@
 
 [![CI](https://github.com/Vinsett07/vinsett-forge-ai/actions/workflows/ci.yml/badge.svg)](https://github.com/Vinsett07/vinsett-forge-ai/actions/workflows/ci.yml)
 
-**v0.6.1 — repository recovery and release validation.**
+**v0.6.2 — managed Netlify database and AI Gateway deployment.**
 
 VINSETT Forge AI turns a product brief into a traceable software project: versioned plans, requirements, acceptance criteria, tasks, Kanban and an audit trail. AI-generated scope remains pending until the project owner explicitly approves it.
 
-M1–M6 are implemented. Local type checking, lint, domain tests and production compilation have been executed. PostgreSQL/browser validation runs in GitHub Actions; production deployment and a live AI-provider request remain separate release gates. See [validation evidence](docs/VALIDATION.md) and [the recovery record](docs/RECOVERY_2026-10-04.md).
+M1–M6 are implemented. The separate production site is [vinsett-forge-ai.netlify.app](https://vinsett-forge-ai.netlify.app). PostgreSQL/Chromium CI passed, and production registration, persistence, GitHub synchronization and a real AI proposal with owner approval were verified. Backup restoration and historical tag publication remain open. See [production evidence](docs/PRODUCTION_2026-10-04.md), [validation evidence](docs/VALIDATION.md) and [the recovery record](docs/RECOVERY_2026-10-04.md).
 
 ## Features
 
@@ -55,7 +55,7 @@ node --env-file=.env.local scripts/migrate.mjs
 npm run dev
 ```
 
-The migration command above explicitly loads `.env.local`; `npm run db:migrate` expects exported environment variables. The migrations are idempotent SQL files; this is not a migration-ledger system. Back up production before changing schema.
+The migration command above explicitly loads `.env.local`; `npm run db:migrate` expects exported environment variables. Both it and Netlify use the idempotent SQL files under `netlify/database/migrations`. Netlify manages production migration tracking and publication. Back up production before changing schema.
 
 ## Validate
 
@@ -82,11 +82,11 @@ GitHub Actions uses PostgreSQL 17, reapplies all four migrations, verifies lint/
 | M1 — Foundation | Implemented |
 | M2 — Authentication and persistence | Implemented; covered by the database/browser CI journey |
 | M3 — Delivery workspace | Implemented; covered by the database/browser CI journey |
-| M4 — Human-reviewed AI | Deterministic flow implemented; live provider request pending |
-| M5 — GitHub context | Read-only integration implemented; deployed synchronization pending |
-| M6 — Release readiness | Pipeline and runbooks implemented; production acceptance pending |
+| M4 — Human-reviewed AI | External provider and approval verified in production |
+| M5 — GitHub context | Public repository link and synchronization verified in production |
+| M6 — Release readiness | Separate site, database, health and CI verified; backup restoration pending |
 
-Remaining release work: production database and secrets, a separate Netlify site, deployed `/api/health`, the authenticated browser journey on that site, live GitHub synchronization, an optional real AI-provider request, and a backup/restore rehearsal. A passing build alone does not establish production readiness.
+Remaining release work: restore a production backup into an isolated environment, complete the authenticated UI journey on the live domain (the browser journey currently runs in CI and production was exercised over HTTP), and publish the six preserved historical tags using Git credentials with workflow access. See the production record for precise evidence and access blockers.
 
 ## Documentation
 

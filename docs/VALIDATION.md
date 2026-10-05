@@ -1,4 +1,20 @@
-# Validation Report — v0.6.1 recovery
+# Validation Report — v0.6.2 production
+
+## Latest production validation — 2026-10-04
+
+- [CI run 37245106626](https://github.com/Vinsett07/vinsett-forge-ai/actions/runs/37245106626) passed for source commit `2794a1ad3614f3c2ae3c795b06f99da20864cfc8`: four PostgreSQL 17 migrations applied twice, lint, typecheck, 19 unit tests, production build and 3 Chromium tests.
+- Dedicated [Forge production site](https://vinsett-forge-ai.netlify.app): health HTTP 200, version 0.6.2, session configuration and all nine database tables healthy.
+- Production HTTP acceptance passed: registration with Secure/HttpOnly/SameSite cookie, project/requirement/task persistence, GitHub link and synchronization, real external AI response, explicit approval creating snapshot v2, duplicate approval rejected with 409, logout denying access with 401, login restoring the project and its generated plan.
+- External AI returned `provider=openai`, `model=gpt-6-astra` and a provider response ID through Netlify AI Gateway. The proposal was pending before approval.
+- Landing page and auth screen rendered in the cloud browser. The full browser journey was executed against the CI production build, not the live domain.
+- Netlify production migrations and on-publish snapshots were observed. An actual backup restore is still pending authenticated database-management access.
+- The six original annotated tags pass local object/commit integrity verification. No tag refs are currently published; the existing Actions credential lacks workflow permission.
+
+Details and remaining actions: [production record](PRODUCTION_2026-10-04.md). The reports below are historical and do not supersede this section.
+
+---
+
+# Historical recovery — v0.6.1
 
 ## 2026-10-04 update
 
