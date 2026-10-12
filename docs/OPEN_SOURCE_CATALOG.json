@@ -1,0 +1,185 @@
+{
+  "schema_version": "1.0",
+  "catalog_name": "VINSETT Open Source Toolkit",
+  "verified_date": "2026-10-12",
+  "policy": {
+    "use_when_relevant": true,
+    "automatic_installation": false,
+    "automatic_forks": false,
+    "review_before_adoption": [
+      "license",
+      "dependency-security",
+      "maintenance",
+      "compatibility",
+      "data-privacy",
+      "operating-cost",
+      "sandbox-tests"
+    ],
+    "note": "Reference catalog only; do not treat inclusion as approval for production use."
+  },
+  "repositories": [
+    {
+      "repo": "sindresorhus/awesome",
+      "name": "Awesome",
+      "category": "descoberta",
+      "purpose": "Diretorio de listas curadas de ferramentas e bibliotecas",
+      "use_for": [
+        "pesquisa de tecnologias",
+        "comparacao de alternativas"
+      ],
+      "caution": "Links e listas nao equivalem a auditoria de seguranca.",
+      "projects": [
+        "VINSETT Forge AI",
+        "VINSETT Academy",
+        "VINSETT Trader"
+      ],
+      "url": "https://github.com/sindresorhus/awesome"
+    },
+    {
+      "repo": "public-apis/public-apis",
+      "name": "Public APIs",
+      "category": "apis",
+      "purpose": "Catalogo de APIs externas para integracoes",
+      "use_for": [
+        "prototipos com dados externos",
+        "consulta de fornecedores de API"
+      ],
+      "caution": "Verificar autenticacao, SLAs, licenca, limites e preco de cada API antes do uso.",
+      "projects": [
+        "VINSETT Trader",
+        "VINSETT Academy",
+        "VINSETT Forge AI"
+      ],
+      "url": "https://github.com/public-apis/public-apis"
+    },
+    {
+      "repo": "ollama/ollama",
+      "name": "Ollama",
+      "category": "ia-local",
+      "purpose": "Execucao de modelos de IA em infraestrutura propria",
+      "use_for": [
+        "inferencia local",
+        "testes de privacidade e custo"
+      ],
+      "caution": "Requer maquina/servidor com memoria e computacao adequadas; analisar modelos individualmente.",
+      "projects": [
+        "VINSETT Forge AI",
+        "VINSETT Academy"
+      ],
+      "url": "https://github.com/ollama/ollama"
+    },
+    {
+      "repo": "langflow-ai/langflow",
+      "name": "Langflow",
+      "category": "orquestracao",
+      "purpose": "Construcao e orquestracao visual de fluxos/agentes de IA",
+      "use_for": [
+        "prototipos de agentes",
+        "integracao entre ferramentas"
+      ],
+      "caution": "Conferir custo de hospedagem, controle de acesso e exposicao de credenciais.",
+      "projects": [
+        "VINSETT Forge AI",
+        "VINSETT Academy"
+      ],
+      "url": "https://github.com/langflow-ai/langflow"
+    },
+    {
+      "repo": "Shubhamsaboo/awesome-llm-apps",
+      "name": "Awesome LLM Apps",
+      "category": "exemplos-ia",
+      "purpose": "Exemplos e referencias de agentes e aplicativos com LLMs",
+      "use_for": [
+        "projetos de referencia",
+        "prototipos de RAG e agentes"
+      ],
+      "caution": "Revisar licencas por componente e nao copiar segredos ou codigo de exemplo sem testes.",
+      "projects": [
+        "VINSETT Forge AI",
+        "VINSETT Academy"
+      ],
+      "url": "https://github.com/Shubhamsaboo/awesome-llm-apps"
+    },
+    {
+      "repo": "ripienaar/free-for-dev",
+      "name": "Free for Dev",
+      "category": "infraestrutura",
+      "purpose": "Diretorio de servicos para desenvolvedores com camadas gratuitas",
+      "use_for": [
+        "hospedagem e deploy",
+        "monitoramento e banco de dados"
+      ],
+      "caution": "Termos, cotas e precos mudam; validar diretamente no fornecedor.",
+      "projects": [
+        "VINSETT Forge AI",
+        "VINSETT Academy",
+        "VINSETT Trader"
+      ],
+      "url": "https://github.com/ripienaar/free-for-dev"
+    },
+    {
+      "repo": "nexu-io/open-design",
+      "name": "OpenDesign",
+      "category": "design",
+      "purpose": "Ambiente colaborativo de agentes para design e prototipagem",
+      "use_for": [
+        "interfaces",
+        "exploracao de UX e prototipos"
+      ],
+      "caution": "Avaliar limites de planos, creditos, licencas e politica de dados antes da integracao.",
+      "projects": [
+        "VINSETT Academy",
+        "VINSETT Forge AI"
+      ],
+      "url": "https://github.com/nexu-io/open-design"
+    },
+    {
+      "repo": "punkpeye/awesome-mcp-servers",
+      "name": "Awesome MCP Servers",
+      "category": "integracoes-mcp",
+      "purpose": "Catalogo de servidores MCP para conectar agentes a ferramentas",
+      "use_for": [
+        "descoberta de conectores",
+        "integracoes de ferramentas"
+      ],
+      "caution": "Servidores terceiros podem executar operacoes sensiveis; auditar codigo e permissoes.",
+      "projects": [
+        "VINSETT Forge AI",
+        "VINSETT Academy",
+        "VINSETT Trader"
+      ],
+      "url": "https://github.com/punkpeye/awesome-mcp-servers"
+    },
+    {
+      "repo": "OpenHands/OpenHands",
+      "name": "OpenHands",
+      "category": "agentes-codigo",
+      "purpose": "Plataforma de agentes de desenvolvimento e automacoes de codigo",
+      "use_for": [
+        "programacao assistida",
+        "revisao e manutencao de codigo"
+      ],
+      "caution": "Executar em sandbox com permissao minima; controlar custos, tokens e acesso a repositorios.",
+      "projects": [
+        "VINSETT Forge AI"
+      ],
+      "url": "https://github.com/OpenHands/OpenHands"
+    },
+    {
+      "repo": "D4Vinci/Scrapling",
+      "name": "Scrapling",
+      "category": "coleta-web",
+      "purpose": "Ferramentas Python para coleta e extracao de paginas web",
+      "use_for": [
+        "coleta autorizada de dados publicos",
+        "integracao de fontes sem API"
+      ],
+      "caution": "Respeitar leis, privacidade, termos dos sites e limites de acesso; priorizar APIs oficiais.",
+      "projects": [
+        "VINSETT Forge AI",
+        "VINSETT Academy"
+      ],
+      "url": "https://github.com/D4Vinci/Scrapling"
+    }
+  ]
+}
