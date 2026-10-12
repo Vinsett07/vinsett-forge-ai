@@ -1,5 +1,13 @@
 # Validation Report — v0.6.2 production
 
+## Operational closeout preparation — 2026-10-12
+
+- A guarded DML cleanup candidate is prepared under `ops/pending-migrations`, outside automatic Netlify migration discovery. No production cleanup or new application deploy is claimed.
+- Eleven cleanup scenarios passed using a fresh local `@netlify/database-dev` 1.0.1 database with the four active migrations. Node reports 12 passing tests including the parent container. Each scenario rolls back its transaction; unrelated table fingerprints remain identical. [Evidence](evidence/cleanup-rehearsal-2026-10-12.json).
+- Coverage includes idempotence, an absent target, non-test ownership, newly edited data, additional scope, another project of the owner, and cross-project task/GitHub/activity/AI references. The suite automatically runs against the existing PostgreSQL 17 service in CI and rejects non-loopback test connection URLs.
+- Typecheck, targeted ESLint and whitespace checks passed locally. No new repository dependency was introduced. The production migration inventory still contains four migrations.
+- Netlify project read access worked again, while the supported CLI remained `NOT_LOGGED_IN` and the dashboard required sign-in. The authenticated production browser journey and historical tag publication remain pending.
+
 ## Latest review — 2026-10-12
 
 - [CI run 38209873639](https://github.com/Vinsett07/vinsett-forge-ai/actions/runs/38209873639) passed for source commit `97fa0736b9819eb4eaf39fa7ab223a21db755d44`: four PostgreSQL 17 migrations applied twice, lint, typecheck, 19 unit tests, production build and 3 Chromium tests. Job logs confirm the test counts.

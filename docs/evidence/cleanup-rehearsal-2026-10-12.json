@@ -1,0 +1,36 @@
+{
+  "checkedAt": "2026-10-12T11:43:48.876765+00:00",
+  "status": "prepared_and_tested_not_applied_to_production",
+  "candidate": "ops/pending-migrations/20261012063000_cleanup-acceptance-fixture/migration.sql",
+  "engine": {
+    "package": "@netlify/database-dev",
+    "version": "1.0.1",
+    "mode": "disposable local PGlite/PostgreSQL-compatible database"
+  },
+  "activeMigrations": 4,
+  "results": {
+    "scenarios": 11,
+    "nodeTestsIncludingParent": 12,
+    "passed": 12,
+    "failed": 0,
+    "skipped": 0
+  },
+  "checks": [
+    "restricted cascade with unrelated fingerprints preserved",
+    "reapplication",
+    "absent target",
+    "non-test owner",
+    "new activity",
+    "additional scope",
+    "owner has another project",
+    "external task requirement",
+    "external GitHub integration",
+    "external activity actor",
+    "external AI creator",
+    "external AI decider"
+  ],
+  "productionRowsChanged": false,
+  "productionBranchesDeleted": false,
+  "deploymentPerformed": false,
+  "testIsolation": "Every scenario rolls back; the test accepts only an explicit disposable loopback database or the repository CI service."
+}

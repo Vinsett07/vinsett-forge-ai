@@ -4,6 +4,14 @@ O Forge está publicado na versão **0.6.2** e pode ser apresentado no portfóli
 
 [Aplicação](https://vinsett-forge-ai.netlify.app/) · [Código](https://github.com/Vinsett07/vinsett-forge-ai) · [Estudo de caso](PORTFOLIO_CASE_STUDY.md)
 
+## Continuação: limpeza preparada e testada
+
+O conector Netlify voltou a consultar o projeto, confirmando o deploy `6ac2e8da8319aba40430e20c`. A CLI continuou sem sessão (`NOT_LOGGED_IN`), e o painel aberto no navegador exigiu login. Esses acessos são independentes.
+
+Foi preparada uma [migração de limpeza com proteções](../ops/README.md), mantida fora das migrações ativas. Onze cenários passaram em banco descartável: remoção restrita e repetição segura, alvo ausente, proprietário fora do domínio de teste, atividade recente, escopo adicional, outro projeto da mesma conta e cinco formas de referência externa. Cada cenário reverte sua transação, e os dados alheios ao fixture são comparados por fingerprints. [Evidência local](evidence/cleanup-rehearsal-2026-10-12.json).
+
+O CI executa os mesmos cenários no PostgreSQL 17 já existente. Nenhuma dependência nova foi adicionada ao produto. A migração ainda precisa da conferência do estado atual do fixture e de promoção para o diretório ativo por um deploy autorizado. A preparação não encerra a limpeza; tags e jornada autenticada pública continuam pendentes.
+
 ## O que foi conferido nesta revisão
 
 | Item | Resultado | Evidência |
@@ -37,7 +45,7 @@ Esta atualização é de documentação e evidências. A aplicação permanece n
 | --- | --- | --- |
 | Seis tags históricas | Falta uma credencial Git utilizável com escrita e permissão de workflows; o conector disponível não publica tags | Executar `bash scripts/publish-historical-tags.sh --push` em cliente Git autorizado e conferir os seis objetos anotados e commits remotos |
 | Duas branches do ensaio | Exclusão exige o painel Netlify autenticado; acesso atual expirou | Confirmar e remover somente `restore-rehearsal-20261005` e `old-restore-rehearsal-20261005`, preservando produção e snapshots |
-| Conta/projeto sintéticos de aceite | Último inventário indicava dados presentes; acesso de implantação indisponível | Conferir o projeto `fe9cd4f4-ac99-4d4f-b18c-a0f37d49b5a3` e seu proprietário sintético; testar e publicar migração de limpeza com proteções e validar o resultado |
+| Conta/projeto sintéticos de aceite | Migração com proteções preparada e testada; painel/cliente de implantação ainda sem autenticação | Conferir o fixture atual, promover a [migração preparada](../ops/README.md) por deploy autorizado e verificar a remoção restrita |
 | Jornada autenticada no navegador público | Não há sessão autenticada disponível para essa verificação | Em conta de demonstração autorizada, conferir criação/persistência, Kanban, decisões de IA, contexto GitHub e saída/nova entrada no domínio publicado |
 
 O estado das branches e do fixture foi observado pela última vez em 05/10 e não foi reconsultado no painel em 12/10. Não há confirmação de limpeza nesta revisão. A credencial anterior de Actions não tinha permissão de workflows; os commits e objetos originais continuam preservados em `history/recovered-v0.6.0.bundle`.
