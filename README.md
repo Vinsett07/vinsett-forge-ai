@@ -80,7 +80,7 @@ Execute os testes de navegador somente com banco descartável. Eles criam contas
 node --env-file=.env.local node_modules/@playwright/test/cli.js test
 ```
 
-O GitHub Actions usa PostgreSQL 17, reaplica as quatro migrações, executa lint, checagem de tipos, 19 testes unitários, build e três testes Chromium sobre o servidor gerado pelo build. Relatórios e traces ficam retidos por sete dias. A jornada cobre cadastro, persistência, Kanban, isolamento entre usuários, aprovação, rejeição, decisões duplicadas/concorrentes, saída, nova entrada e exclusão.
+O GitHub Actions usa PostgreSQL 17, reaplica as quatro migrações, executa lint, checagem de tipos, 19 testes unitários, 11 cenários transacionais de proteção da limpeza, build e três testes Chromium sobre o servidor gerado pelo build. Relatórios e traces ficam retidos por sete dias. A jornada cobre cadastro, persistência, Kanban, isolamento entre usuários, aprovação, rejeição, decisões duplicadas/concorrentes, saída, nova entrada e exclusão. Fora do CI, os cenários de limpeza só são habilitados com um banco descartável explícito; consulte [ops/README.md](ops/README.md).
 
 ## Entregas e pendências
 
@@ -96,7 +96,7 @@ O GitHub Actions usa PostgreSQL 17, reaplica as quatro migrações, executa lint
 Pendências registradas na [revisão atual](docs/PROJECT_STATUS_2026-10-12.md):
 
 - Publicar as seis tags históricas preservadas, usando uma credencial Git com acesso de escrita ao repositório e permissão de workflows.
-- Limpar as duas branches descartáveis do ensaio de restauração e a conta/projeto sintéticos de aceite. A conexão Netlify precisa ser reautenticada; a exclusão das branches exige o painel.
+- Limpar as duas branches descartáveis do ensaio de restauração e a conta/projeto sintéticos de aceite. A [migração de limpeza está preparada e testada](ops/README.md), fora das migrações ativas. A exclusão das branches exige o painel autenticado, e a aplicação da limpeza exige um deploy autorizado.
 - Completar a jornada autenticada pelo navegador no domínio público. Essa jornada já passa no CI; o aceite autenticado de produção foi realizado por HTTP.
 
 O projeto já pode ser apresentado como um MVP funcional publicado, com evidências técnicas e essas limitações explícitas. O [estudo de caso](docs/PORTFOLIO_CASE_STUDY.md) reúne o conteúdo para o novo portfólio.

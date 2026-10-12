@@ -42,6 +42,8 @@ The [2026-10-05 rehearsal](BACKUP_RESTORE_2026-10-05.md) passed full table/schem
 
 On 2026-10-12 the Netlify connector required reauthentication and the CLI reported `NOT_LOGGED_IN`. No cleanup or deployment was performed during that review. Restore the supported connection before proceeding, then confirm current branch/fixture state because the last inventory is dated 2026-10-05. See [current status](PROJECT_STATUS_2026-10-12.md).
 
+Follow-up on 2026-10-12: the connector successfully read the Forge project again, but the CLI remained signed out and the dashboard required login. A [guarded cleanup candidate](../ops/README.md) is now prepared outside the active migrations directory. Its eleven transactional scenarios passed against a disposable local database, and repository CI runs them against PostgreSQL 17. Preparing/testing the candidate does not remove production rows or branches.
+
 For a self-managed PostgreSQL installation, a logical backup with its authorized connection string can be taken as follows. These commands are not a workaround for Netlify management access:
 
 ```bash
