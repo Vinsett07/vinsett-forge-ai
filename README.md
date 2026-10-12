@@ -97,3 +97,4 @@ Remaining release work: restore a production backup into an isolated environment
 - [Operations and backup/restore](docs/OPERATIONS.md)
 - [Portfolio case study](docs/PORTFOLIO_CASE_STUDY.md)
 - [Validation evidence](docs/VALIDATION.md)
+- [Open-source toolkit (10 repositorios)](docs/OPEN_SOURCE_TOOLKIT.md)
