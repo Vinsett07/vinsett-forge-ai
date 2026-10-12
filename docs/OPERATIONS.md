@@ -30,15 +30,19 @@ Run:
 npm run db:migrate
 ```
 
-The canonical SQL migrations are under `netlify/database/migrations/<number>_<slug>/migration.sql`. Netlify applies them before publishing a production deploy and blocks publication if a migration fails. The local/CI runner uses the same files with an explicit `DATABASE_URL` and deliberately reapplies them to check idempotence.
+The canonical SQL migrations are under `netlify/database/migrations/<number>_<slug>/migration.sql`. Netlify applies them before publishing a production deploy and blocks publication if a migration fails. The local/CI runner uses the same files with an explicit disposable `DATABASE_URL` and deliberately reapplies them to check idempotence.
+
+For the managed production database, commit and review new schema/data migrations and apply them through deployment. Do not edit previously applied migrations, run the local migration command against managed production, or delete production rows through ad hoc SQL. A cleanup migration must validate the exact synthetic fixture and abort on unexpected ownership or data before deleting anything.
 
 ## Backup and restore
 
 Netlify Database automatically takes daily backups and a backup when publishing production. Manage snapshots in the Forge project's Database dashboard. A restore rehearsal must target an isolated database branch. Check the current OpenAPI schema for the explicit target parameter: the version used on 2026-10-05 specifies `branch_id`, while the prose documentation still mentions `branch_name`. Never omit the target or restore over production for a rehearsal.
 
-The [2026-10-05 rehearsal](BACKUP_RESTORE_2026-10-05.md) passed full table/schema comparison, a restoration probe and all 13 relationship checks. Netlify preserved the pre-restore test state as a second branch. The tested management API requires the dashboard to delete these branches, and its production connection was read-only. Cleanup remains recorded in the rehearsal report; do not assume a requested owner role grants production write access.
+The [2026-10-05 rehearsal](BACKUP_RESTORE_2026-10-05.md) passed full table/schema comparison, a restoration probe and all 13 relationship checks. Netlify preserved the pre-restore test state as a second branch. The tested management API requires the dashboard to delete these branches, and its production connection was read-only. Cleanup remains recorded in the rehearsal report; do not assume a requested owner role grants production write access. Use a reviewed DML migration for the synthetic production fixture; do not retry direct deletion with alternate credentials.
 
-For a PostgreSQL logical backup with an authorized connection string:
+On 2026-10-12 the Netlify connector required reauthentication and the CLI reported `NOT_LOGGED_IN`. No cleanup or deployment was performed during that review. Restore the supported connection before proceeding, then confirm current branch/fixture state because the last inventory is dated 2026-10-05. See [current status](PROJECT_STATUS_2026-10-12.md).
+
+For a self-managed PostgreSQL installation, a logical backup with its authorized connection string can be taken as follows. These commands are not a workaround for Netlify management access:
 
 ```bash
 pg_dump --format=custom --no-owner "$DATABASE_URL" > forge.backup

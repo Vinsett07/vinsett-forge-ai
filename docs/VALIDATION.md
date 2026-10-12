@@ -1,16 +1,28 @@
 # Validation Report — v0.6.2 production
 
-## Latest production validation — 2026-10-04
+## Latest review — 2026-10-12
+
+- [CI run 38209873639](https://github.com/Vinsett07/vinsett-forge-ai/actions/runs/38209873639) passed for source commit `97fa0736b9819eb4eaf39fa7ab223a21db755d44`: four PostgreSQL 17 migrations applied twice, lint, typecheck, 19 unit tests, production build and 3 Chromium tests. Job logs confirm the test counts.
+- The live site returned HTTP 200 from `/api/health`, version 0.6.2 and all readiness checks passed. Anonymous `/dashboard` redirected to `/auth`, and `/api/projects` returned 401. Sanitized results: [public checks](evidence/public-check-2026-10-12.json).
+- The live landing page, architecture anchor and navigation to the authentication screen were checked in the browser. The [landing capture](assets/forge-landing-2026-10-12.jpg) is from the actual public site.
+- Backup restoration is **complete**, with the [2026-10-05 evidence](BACKUP_RESTORE_2026-10-05.md) confirming all nine table fingerprints, schema equivalence, 13 validated foreign keys and no orphans. This was not repeated in the current review.
+- All six annotated historical tags passed `bash scripts/publish-historical-tags.sh --verify` again. GitHub's tag refs were empty at review time; publication still needs an authorized Git credential with workflow access.
+- Netlify management access requires reauthentication (`oauth_token_invalid_grant`); the supported CLI also reported `NOT_LOGGED_IN`. The two test branches and synthetic acceptance fixture were last recorded as remaining on 2026-10-05; their cleanup could not be rechecked or completed here.
+- No new authenticated production session or external AI call was made in this review. The 2026-10-04 HTTP acceptance below remains the evidence for those integrations; the full authenticated live-domain browser journey is still pending.
+
+See the [current status and closeout criteria](PROJECT_STATUS_2026-10-12.md). This review updates documentation and portfolio evidence; it does not represent a new application deployment.
+
+## Production HTTP acceptance — 2026-10-04
 
 - [CI run 37245106626](https://github.com/Vinsett07/vinsett-forge-ai/actions/runs/37245106626) passed for source commit `2794a1ad3614f3c2ae3c795b06f99da20864cfc8`: four PostgreSQL 17 migrations applied twice, lint, typecheck, 19 unit tests, production build and 3 Chromium tests.
 - Dedicated [Forge production site](https://vinsett-forge-ai.netlify.app): health HTTP 200, version 0.6.2, session configuration and all nine database tables healthy.
 - Production HTTP acceptance passed: registration with Secure/HttpOnly/SameSite cookie, project/requirement/task persistence, GitHub link and synchronization, real external AI response, explicit approval creating snapshot v2, duplicate approval rejected with 409, logout denying access with 401, login restoring the project and its generated plan.
 - External AI returned `provider=openai`, `model=gpt-6-astra` and a provider response ID through Netlify AI Gateway. The proposal was pending before approval.
 - Landing page and auth screen rendered in the cloud browser. The full browser journey was executed against the CI production build, not the live domain.
-- Netlify production migrations and on-publish snapshots were observed. An actual backup restore is still pending authenticated database-management access.
-- The six original annotated tags pass local object/commit integrity verification. No tag refs are currently published; the existing Actions credential lacks workflow permission.
+- Netlify production migrations and on-publish snapshots were observed. The then-pending restore was subsequently completed on [2026-10-05](BACKUP_RESTORE_2026-10-05.md).
+- The six original annotated tags passed local object/commit integrity verification. Publication was blocked because the existing Actions credential lacked workflow permission.
 
-Details and remaining actions: [production record](PRODUCTION_2026-10-04.md). The reports below are historical and do not supersede this section.
+Details: [production record](PRODUCTION_2026-10-04.md). The reports below are historical and do not supersede the latest review above.
 
 ---
 
