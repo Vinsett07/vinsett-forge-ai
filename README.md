@@ -2,52 +2,59 @@
 
 [![CI](https://github.com/Vinsett07/vinsett-forge-ai/actions/workflows/ci.yml/badge.svg)](https://github.com/Vinsett07/vinsett-forge-ai/actions/workflows/ci.yml)
 
-**v0.6.2 — managed Netlify database and AI Gateway deployment.**
+**v0.6.2 — workspace de planejamento e acompanhamento de projetos de software, com IA e aprovação humana.**
 
-VINSETT Forge AI turns a product brief into a traceable software project: versioned plans, requirements, acceptance criteria, tasks, Kanban and an audit trail. AI-generated scope remains pending until the project owner explicitly approves it.
+O VINSETT Forge AI foi criado para transformar uma ideia em trabalho organizado: briefing, plano versionado, requisitos, critérios de aceite, tarefas e histórico. O proprietário revisa as sugestões da IA antes de aplicá-las ao projeto.
 
-M1–M6 are implemented. The separate production site is [vinsett-forge-ai.netlify.app](https://vinsett-forge-ai.netlify.app). PostgreSQL/Chromium CI passed, and production registration, persistence, GitHub synchronization and a real AI proposal with owner approval were verified. Backup restoration and historical tag publication remain open. See [production evidence](docs/PRODUCTION_2026-10-04.md), [validation evidence](docs/VALIDATION.md) and [the recovery record](docs/RECOVERY_2026-10-04.md).
+[Abrir o site](https://vinsett-forge-ai.netlify.app/) · [Estudo de caso para portfólio](docs/PORTFOLIO_CASE_STUDY.md) · [Revisão de 12/10/2026](docs/PROJECT_STATUS_2026-10-12.md)
 
-## Features
+![Página inicial do VINSETT Forge AI em produção](docs/assets/forge-landing-2026-10-12.jpg)
 
-- Registration, login/logout, signed HttpOnly sessions and salted `scrypt` password hashes.
-- PostgreSQL/Drizzle persistence and projects isolated by owner.
-- Structured briefing and deterministic baseline planning with versioned snapshots.
-- Requirements, acceptance criteria, five-stage Kanban and activity history.
-- Audited AI proposals with approve/reject decisions and atomic application of scope.
-- Deterministic planning without an external key; optional OpenAI Responses adapter.
-- Read-only GitHub repository, issue, PR, commit and Actions context.
-- Health endpoint, security headers, process-local abuse guards and deployment configuration.
+Os seis marcos estão implementados, com site próprio na Netlify, separado do Academy. Cadastro, persistência, integração GitHub e IA externa com aprovação foram verificados em produção em 04/10. A restauração real do backup foi validada em ambiente isolado em 05/10. Em 12/10, a saúde pública e o CI passaram novamente. Ainda há pendências de acesso para encerrar a operação; consulte a lista abaixo.
 
-## Product flow
+## O que funciona
+
+- Cadastro, entrada e saída, sessões assinadas em cookie HttpOnly e senhas protegidas com `scrypt` e salt.
+- Projetos persistidos em PostgreSQL/Drizzle, com acesso limitado ao proprietário.
+- Briefing estruturado, plano inicial determinístico e snapshots versionados.
+- Requisitos, critérios de aceite, Kanban de cinco etapas e histórico de atividades.
+- Propostas de IA salvas como pendentes; aprovação aplica plano, requisitos e tarefas em uma transação. Rejeição registra a decisão.
+- Provedor determinístico para uso sem chave externa e adaptador OpenAI Responses. Uma falha do provedor externo configurado é exibida, sem substituição silenciosa.
+- Contexto GitHub de leitura: repositório, issues, pull requests, commits e execuções do Actions. O site público usa repositórios públicos.
+- Endpoint de saúde, cabeçalhos de segurança, limites de requisições por processo e configuração de publicação.
+
+O Forge organiza o desenvolvimento e acompanha seu contexto. A versão atual não gera nem publica código de aplicações automaticamente, e não oferece colaboração entre organizações.
+
+## Como funciona
 
 ```mermaid
 flowchart TD
-  A[Authenticated project] --> B[Brief and baseline plan]
-  B --> C[Requirements and Kanban]
-  C --> D[Pending AI proposal]
-  D --> E{Owner decision}
-  E -->|Approve| F[Atomic snapshot and scope update]
-  E -->|Reject| G[Audit decision]
+  A[Projeto do usuário] --> B[Briefing e plano inicial]
+  B --> C[Requisitos e Kanban]
+  C --> D[Proposta de IA pendente]
+  D --> E{Decisão do proprietário}
+  E -->|Aprovar| F[Atualização atômica e snapshot]
+  E -->|Rejeitar| G[Registro da decisão]
   F --> C
   G --> C
 ```
 
-## Architecture
+## Arquitetura
 
-| Responsibility | Implementation |
+| Responsabilidade | Implementação |
 | --- | --- |
-| Web UI and API | Next.js App Router, React, TypeScript |
-| Domain | Dependency-free TypeScript contracts and validators |
-| Persistence | PostgreSQL, Drizzle ORM, four ordered SQL migrations |
-| Authentication | `scrypt`, HMAC-signed HttpOnly cookie |
-| AI | Validated proposals, provider audit metadata, explicit human approval |
-| GitHub | Read-only REST adapter |
-| Validation | Node tests, ESLint, TypeScript, production build, Playwright with PostgreSQL |
+| Interface e API | Next.js App Router, React, TypeScript |
+| Domínio | Contratos e validadores TypeScript sem dependências externas |
+| Persistência | PostgreSQL, Drizzle ORM, nove tabelas e quatro migrações SQL ordenadas |
+| Autenticação | `scrypt`, cookie HttpOnly assinado com HMAC |
+| IA | Propostas validadas, metadados de auditoria e aprovação humana explícita |
+| GitHub | Adaptador REST somente de leitura |
+| Hospedagem | Netlify, banco gerenciado e AI Gateway |
+| Validação | Testes Node, ESLint, TypeScript, build e Playwright com PostgreSQL |
 
-## Run locally
+## Executar localmente
 
-Requires Node.js 22.13+ and PostgreSQL. Copy `.env.example` to `.env.local`, set `DATABASE_URL` and a random `SESSION_SECRET` of at least 32 characters, and set `AI_PROVIDER=deterministic` for a key-free first run. Never commit credentials.
+Requer Node.js 22.13+ e PostgreSQL. Copie `.env.example` para `.env.local`, configure `DATABASE_URL` e um `SESSION_SECRET` aleatório com pelo menos 32 caracteres. Use `AI_PROVIDER=deterministic` para começar sem chave externa. Nunca versione credenciais.
 
 ```bash
 npm ci
@@ -55,9 +62,9 @@ node --env-file=.env.local scripts/migrate.mjs
 npm run dev
 ```
 
-The migration command above explicitly loads `.env.local`; `npm run db:migrate` expects exported environment variables. Both it and Netlify use the idempotent SQL files under `netlify/database/migrations`. Netlify manages production migration tracking and publication. Back up production before changing schema.
+O comando de migração acima carrega `.env.local`; `npm run db:migrate` espera variáveis já exportadas. O executor local e a Netlify usam os arquivos SQL em `netlify/database/migrations`. A Netlify controla as migrações e sua aplicação antes de publicar em produção. Consulte o [procedimento operacional](docs/OPERATIONS.md) antes de alterar o banco.
 
-## Validate
+## Validar
 
 ```bash
 npm run lint
@@ -67,34 +74,42 @@ npm run build
 npx playwright install chromium
 ```
 
-Run browser tests only against a disposable database. They create test accounts and projects, exercise scope approval and delete their test project:
+Execute os testes de navegador somente com banco descartável. Eles criam contas e projetos de teste, verificam decisões sobre propostas e excluem o projeto de teste:
 
 ```bash
 node --env-file=.env.local node_modules/@playwright/test/cli.js test
 ```
 
-GitHub Actions uses PostgreSQL 17, reapplies all four migrations, verifies lint/types/tests/build, and runs Chromium against the production server. Browser reports and failure traces are retained for seven days. The full journey covers registration, persistence, Kanban, owner isolation, approval, rejection, duplicate/concurrent decisions, logout/login and deletion.
+O GitHub Actions usa PostgreSQL 17, reaplica as quatro migrações, executa lint, checagem de tipos, 19 testes unitários, build e três testes Chromium sobre o servidor gerado pelo build. Relatórios e traces ficam retidos por sete dias. A jornada cobre cadastro, persistência, Kanban, isolamento entre usuários, aprovação, rejeição, decisões duplicadas/concorrentes, saída, nova entrada e exclusão.
 
-## Milestones and remaining work
+## Entregas e pendências
 
-| Milestone | State |
+| Marco | Estado verificado |
 | --- | --- |
-| M1 — Foundation | Implemented |
-| M2 — Authentication and persistence | Implemented; covered by the database/browser CI journey |
-| M3 — Delivery workspace | Implemented; covered by the database/browser CI journey |
-| M4 — Human-reviewed AI | External provider and approval verified in production |
-| M5 — GitHub context | Public repository link and synchronization verified in production |
-| M6 — Release readiness | Separate site, database, health and CI verified; backup restoration pending |
+| M1 — Fundação | Implementado |
+| M2 — Autenticação e persistência | Validado no CI e por HTTP em produção |
+| M3 — Workspace de execução | Jornada de banco e navegador validada no CI |
+| M4 — IA com revisão humana | Provedor externo e aprovação validados em produção |
+| M5 — Contexto GitHub | Vínculo e sincronização de repositório público validados em produção |
+| M6 — Operação | Site, banco, saúde, CI e restauração isolada do backup verificados |
 
-Remaining release work: restore a production backup into an isolated environment, complete the authenticated UI journey on the live domain (the browser journey currently runs in CI and production was exercised over HTTP), and publish the six preserved historical tags using Git credentials with workflow access. See the production record for precise evidence and access blockers.
+Pendências registradas na [revisão atual](docs/PROJECT_STATUS_2026-10-12.md):
 
-## Documentation
+- Publicar as seis tags históricas preservadas, usando uma credencial Git com acesso de escrita ao repositório e permissão de workflows.
+- Limpar as duas branches descartáveis do ensaio de restauração e a conta/projeto sintéticos de aceite. A conexão Netlify precisa ser reautenticada; a exclusão das branches exige o painel.
+- Completar a jornada autenticada pelo navegador no domínio público. Essa jornada já passa no CI; o aceite autenticado de produção foi realizado por HTTP.
 
+O projeto já pode ser apresentado como um MVP funcional publicado, com evidências técnicas e essas limitações explícitas. O [estudo de caso](docs/PORTFOLIO_CASE_STUDY.md) reúne o conteúdo para o novo portfólio.
+
+## Documentação
+
+- [Revisão atual e próximos passos](docs/PROJECT_STATUS_2026-10-12.md)
 - [Roadmap](docs/ROADMAP.md)
-- [Architecture](docs/ARCHITECTURE.md)
-- [AI layer](docs/AI_LAYER.md)
-- [GitHub integration](docs/GITHUB_INTEGRATION.md)
-- [Operations and backup/restore](docs/OPERATIONS.md)
-- [Portfolio case study](docs/PORTFOLIO_CASE_STUDY.md)
-- [Validation evidence](docs/VALIDATION.md)
-- [Open-source toolkit (10 repositorios)](docs/OPEN_SOURCE_TOOLKIT.md)
+- [Arquitetura](docs/ARCHITECTURE.md)
+- [Camada de IA](docs/AI_LAYER.md)
+- [Integração GitHub](docs/GITHUB_INTEGRATION.md)
+- [Operação e backup](docs/OPERATIONS.md)
+- [Restauração comprovada em 05/10/2026](docs/BACKUP_RESTORE_2026-10-05.md)
+- [Estudo de caso para portfólio](docs/PORTFOLIO_CASE_STUDY.md)
+- [Evidências de validação](docs/VALIDATION.md)
+- [Biblioteca de código aberto (10 repositórios)](docs/OPEN_SOURCE_TOOLKIT.md)

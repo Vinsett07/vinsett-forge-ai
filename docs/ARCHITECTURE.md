@@ -3,7 +3,7 @@
 ## Product boundary
 VINSETT Forge AI is a software delivery workspace. It converts an initial product brief into structured planning artifacts and tracks execution, decisions and AI-assisted analysis over time.
 
-## Current boundaries — Milestone 4
+## Current boundaries — v0.6.2 / Milestones 1–6
 - Public product landing page.
 - Email/password identity with `scrypt` password hashing.
 - Stateless signed HttpOnly session cookie using HMAC-SHA256.
@@ -14,6 +14,11 @@ VINSETT Forge AI is a software delivery workspace. It converts an initial produc
 - AI provider adapter with structured proposal output.
 - Human-in-the-loop decision boundary before scope mutations.
 - Audit metadata for AI provider, model and prompt version.
+- Read-only GitHub context, synchronization history and observable release-readiness checks.
+- Dedicated Netlify deployment with managed PostgreSQL and AI Gateway.
+- Database-aware health endpoint, security headers, process-local abuse guards and PostgreSQL/Chromium CI.
+
+The [2026-10-12 review](PROJECT_STATUS_2026-10-12.md) separates implemented behavior, dated production evidence and pending operational work.
 
 ## Authentication model
 Passwords are never stored in plaintext. A random salt and `scrypt` derived key are persisted in `users.password_hash`. The browser receives only a signed session token in an HttpOnly, SameSite=Lax cookie. In production, `SESSION_SECRET` must be at least 32 characters and the cookie is Secure.
@@ -28,6 +33,8 @@ The current session is stateless: logout removes the browser cookie. Server-side
 - `tasks`: executable work linked optionally to a requirement.
 - `activity_events`: audit/activity trail.
 - `ai_proposals`: generated proposals and human decision metadata.
+- `github_integrations`: current repository link and latest synchronization state.
+- `github_syncs`: historical GitHub synchronization results.
 
 ## AI boundary
 The application owns `AiWorkspaceProposal`; the provider must conform to it. A provider response is locally validated even when Structured Outputs are used.
@@ -48,13 +55,12 @@ Rejection records the decision without scope mutation.
 
 Provider failure is surfaced when OpenAI is explicitly configured; it does not silently replace a failed configured call with fabricated AI output.
 
-## Planned modules
-1. Identity and organizations.
-2. Projects and briefs.
-3. Requirements and acceptance criteria.
-4. Backlog and Kanban workflow.
-5. Architecture decisions (ADR).
-6. AI planning/review adapters.
-7. QA evidence and release readiness.
-8. GitHub synchronization.
-9. Audit trail and activity feed.
+## GitHub boundary
+
+The adapter reads repository metadata, issues, pull requests, commits and Actions runs. It does not push code, create issues or publish releases. The public deployment uses anonymous access to public repositories; a shared privileged token would not provide per-user authorization to private repositories.
+
+## Current limits and future modules
+
+Identity, projects, requirements, Kanban, AI proposals, GitHub synchronization and activity history are implemented. Organizations/shared ownership, an ADR management module, password recovery and server-side session revocation are not implemented.
+
+Rate limits are process-local. Expanding to broader multi-instance use requires distributed abuse protection and an explicit AI usage/cost policy. The application supports planning and delivery tracking; autonomous code execution and deployment of user projects are outside its current boundary.

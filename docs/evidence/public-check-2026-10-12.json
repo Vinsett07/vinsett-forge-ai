@@ -1,0 +1,48 @@
+{
+  "checkedAt": "2026-10-12T06:07:59.288Z",
+  "site": "https://vinsett-forge-ai.netlify.app/",
+  "authentication": "No credentials, cookies or user records accessed",
+  "checks": [
+    {
+      "path": "/api/health",
+      "httpStatus": 200,
+      "location": null,
+      "body": {
+        "status": "ok",
+        "version": "0.6.2",
+        "checks": {
+          "runtime": {
+            "ok": true
+          },
+          "sessionSecret": {
+            "ok": true,
+            "detail": "SESSION_SECRET >= 32 chars"
+          },
+          "databaseUrl": {
+            "ok": true,
+            "detail": "database connection configured"
+          },
+          "database": {
+            "ok": true
+          }
+        },
+        "latencyMs": 712
+      }
+    },
+    {
+      "path": "/auth",
+      "httpStatus": 200,
+      "location": null
+    },
+    {
+      "path": "/dashboard",
+      "httpStatus": 307,
+      "location": "/auth"
+    },
+    {
+      "path": "/api/projects",
+      "httpStatus": 401,
+      "location": null
+    }
+  ]
+}
